@@ -55,6 +55,11 @@ require_once get_stylesheet_directory() . '/inc/class-na-internal-links.php';
 require_once get_stylesheet_directory() . '/inc/enqueue/class-conditional-assets.php';
 
 /**
+ * Include Strategy Library query layer + helpers (FE-3.1).
+ */
+require_once get_stylesheet_directory() . '/inc/query/strategy-archive.php';
+
+/**
  * Include Elementor widgets.
  */
 require_once get_stylesheet_directory() . '/inc/integrations/elementor/class-backtest-chart-widget.php';
