@@ -76,3 +76,34 @@ function na_enqueue_strategy_library_assets() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'na_enqueue_strategy_library_assets', 20 );
+
+/**
+ * Enqueue Single Strategy styles + flagship equity chart assets (FE-3.2).
+ *
+ * Loaded only on is_singular( 'strategy' ). The chart bundle (na-apexcharts +
+ * na-backtest-charts) is registered at priority 10 above; here we enqueue it for
+ * the single-strategy equity curve. Section CSS is versioned by filemtime.
+ */
+function na_enqueue_single_strategy_assets() {
+    if ( ! is_singular( 'strategy' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $rel  = '/assets/css/sections/single-strategy.css';
+    $ver  = file_exists( $base . $rel ) ? filemtime( $base . $rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+
+    wp_enqueue_style(
+        'na-single-strategy',
+        get_stylesheet_directory_uri() . $rel,
+        array( 'na-design-tokens', 'na-components' ),
+        $ver,
+        'all'
+    );
+
+    // Flagship equity curve chart (reuses the registered chart bundle).
+    wp_enqueue_script( 'na-apexcharts' );
+    wp_enqueue_script( 'na-backtest-charts' );
+    wp_enqueue_style( 'na-backtest-charts' );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_single_strategy_assets', 20 );
