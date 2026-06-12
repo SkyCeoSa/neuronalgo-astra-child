@@ -45,6 +45,11 @@ function child_theme_astra_child_enqueue_styles() {
 require_once get_stylesheet_directory() . '/inc/class-na-menus.php';
 
 /**
+ * Include custom site header class.
+ */
+require_once get_stylesheet_directory() . '/inc/class-na-site-header.php';
+
+/**
  * Include internal linking framework.
  */
 require_once get_stylesheet_directory() . '/inc/class-na-internal-links.php';
