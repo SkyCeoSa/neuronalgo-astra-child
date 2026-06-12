@@ -266,3 +266,26 @@
 	border-color: var(--sl-accent);
 	color: var(--sl-text);
 }
+
+/* ==========================================================================
+ * FE-3.1b — Kill the white surround on the Strategy Library archive.
+ * archive-strategy.php renders inside Astra's chrome (get_header/get_footer),
+ * so Astra's body / #content / .ast-container paint their default light
+ * background around the dark .na-strategy-archive <main>. Scope the dark
+ * canvas to the archive body class; !important to beat Astra's dynamic CSS.
+ * ========================================================================== */
+body.post-type-archive-strategy,
+body.post-type-archive-strategy #page,
+body.post-type-archive-strategy #content,
+body.post-type-archive-strategy .site-content,
+body.post-type-archive-strategy .ast-container {
+	background: var(--na-color-bg, #0A0E1A) !important;
+}
+
+/* Let the dark main span the full container width (inner sections already
+   re-constrain to max-width:1180px via .na-sl-intro / .na-sl-layout). */
+body.post-type-archive-strategy #content .ast-container {
+	max-width: 100%;
+	padding-left: 0;
+	padding-right: 0;
+}
