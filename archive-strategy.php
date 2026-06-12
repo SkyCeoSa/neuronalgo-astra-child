@@ -7,11 +7,14 @@
  * query params (see inc/query/strategy-archive.php). Read-only presentation;
  * all business logic stays in neuronalgo-core.
  *
+ * FE-3.1 polish: terminal-flavored filter rail (console header, mono
+ * `>`-prefixed labels, active-state highlight) to match the C2 site footer.
+ *
  * @package astra-child
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit();
 }
 
 get_header();
@@ -41,6 +44,14 @@ $na_filter_taxonomies = array(
 		'label' => 'Risk',
 	),
 );
+
+// Count active filters for the console header (terminal-flavored rail).
+$na_active_count = 0;
+foreach ( $na_filter_taxonomies as $na_param => $na_cfg ) {
+	if ( ! empty( $_GET[ $na_param ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$na_active_count++;
+	}
+}
 ?>
 <main id="primary" class="na-strategy-archive">
 	<section class="na-sl-intro">
@@ -53,6 +64,10 @@ $na_filter_taxonomies = array(
 
 	<div class="na-sl-layout">
 		<aside class="na-sl-filters" aria-label="Filter strategies">
+			<div class="na-sl-filters-head">
+				<span class="na-sl-filters-prompt"><span class="na-sl-filters-tilde">~</span>/library <span class="na-sl-filters-cmd">$ ./filter</span><span class="na-sl-caret" aria-hidden="true"></span></span>
+				<span class="na-sl-filters-count"><span class="na-sl-filters-dot" aria-hidden="true"></span><?php echo esc_html( number_format_i18n( $na_active_count ) ); ?> active</span>
+			</div>
 			<form class="na-sl-filter-form" method="get" action="<?php echo esc_url( $na_archive_link ); ?>">
 				<?php
 				foreach ( $na_filter_taxonomies as $na_param => $na_cfg ) :
@@ -71,7 +86,7 @@ $na_filter_taxonomies = array(
 					}
 					$na_current = isset( $_GET[ $na_param ] ) ? sanitize_title( wp_unslash( $_GET[ $na_param ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					?>
-					<div class="na-sl-filter-group">
+					<div class="na-sl-filter-group<?php echo $na_current ? ' is-active' : ''; ?>">
 						<label class="na-sl-filter-label na-micro" for="<?php echo esc_attr( $na_param ); ?>"><?php echo esc_html( $na_cfg['label'] ); ?></label>
 						<select class="na-sl-select" id="<?php echo esc_attr( $na_param ); ?>" name="<?php echo esc_attr( $na_param ); ?>">
 							<option value=""><?php esc_html_e( 'All', 'astra-child' ); ?></option>
