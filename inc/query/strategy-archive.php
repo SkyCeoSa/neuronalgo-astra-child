@@ -87,7 +87,8 @@ if ( ! function_exists( 'na_strategy_flagship_backtest' ) ) {
 	 * Resolve a strategy's flagship backtest (best published Sharpe).
 	 *
 	 * Backtests reference their strategy via the `strategy_id` meta key.
-	 * Returns 0 when no published backtest is linked.
+	 * Sharpe ties are broken by ID DESC so the most recent / data-complete
+	 * backtest wins. Returns 0 when no published backtest is linked.
 	 *
 	 * @param int $strategy_id Strategy post ID.
 	 * @return int Backtest post ID, or 0.
@@ -110,8 +111,10 @@ if ( ! function_exists( 'na_strategy_flagship_backtest' ) ) {
 				'post_status'    => 'publish',
 				'posts_per_page' => 1,
 				'no_found_rows'  => true,
-				'orderby'        => 'meta_value_num',
-				'order'          => 'DESC',
+				'orderby'        => array(
+					'meta_value_num' => 'DESC',
+					'ID'             => 'DESC',
+				),
 				'meta_key'       => 'sharpe_ratio_meta_field', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'relation' => 'AND',

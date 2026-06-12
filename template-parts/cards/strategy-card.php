@@ -17,16 +17,17 @@ $na_sid       = get_the_ID();
 $na_permalink = get_permalink();
 $na_bt        = function_exists( 'na_strategy_flagship_backtest' ) ? na_strategy_flagship_backtest( $na_sid ) : 0;
 
-// Headline metric: CAGR (fraction -> %), fall back to Sharpe, else neutral.
+// Headline metric: CAGR (stored as a whole-number percent), fall back to
+// Sharpe, else a neutral em dash.
 $na_metric_label = 'CAGR';
 $na_metric_value = '—';
 $na_metric_class = '';
 if ( $na_bt ) {
 	$na_cagr = get_post_meta( $na_bt, 'cagr_meta_field', true );
 	if ( '' !== $na_cagr && null !== $na_cagr ) {
-		$na_cagr     = (float) $na_cagr;
-		$na_cagr_pct = ( abs( $na_cagr ) <= 1.5 ) ? $na_cagr * 100 : $na_cagr;
-		$na_metric_value = ( $na_cagr_pct >= 0 ? '+' : '' ) . number_format( $na_cagr_pct, 1 ) . '%';
+		// Stored as a whole-number percent (e.g. 11.57 => 11.57%), not a fraction.
+		$na_cagr_pct     = (float) $na_cagr;
+		$na_metric_value = ( $na_cagr_pct >= 0 ? '+' : '' ) . number_format( $na_cagr_pct, 2 ) . '%';
 		$na_metric_class = $na_cagr_pct >= 0 ? 'na-pos' : 'na-neg';
 	} else {
 		$na_sharpe = get_post_meta( $na_bt, 'sharpe_ratio_meta_field', true );
