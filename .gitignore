@@ -1,0 +1,12 @@
+# astra-child theme
+/tools/
+*.tmp.php
+*.bak
+*.bak*
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+node_modules/
+# Theme PHP is versioned on purpose — do NOT add *.php here.

@@ -1,0 +1,47 @@
+:root {
+    /* Color */
+    --na-color-bg: #0A0E1A;
+    --na-color-surface: #121829;
+    --na-color-surface-alt: #1A2236;
+    --na-color-elevated: #232C44;
+    --na-color-border: #2A3550;
+    --na-color-text: #E8ECF4;
+    --na-color-text-secondary: #9AA7C2;
+    --na-color-text-muted: #6B7896;
+    --na-color-accent: #3D7DFF;
+    --na-color-accent-hover: #5A93FF;
+    --na-color-positive: #22C55E;
+    --na-color-negative: #EF4444;
+    --na-color-warning: #F59E0B;
+    --na-color-info: #38BDF8;
+
+    /* Typography */
+    --na-font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --na-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* BRAND-A */
+    --na-font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+    --na-color-accent-2: #38BDF8;
+    --na-gradient-brand: linear-gradient(135deg, var(--na-color-accent) 0%, var(--na-color-accent-2) 100%);
+    --na-gradient-brand-soft: linear-gradient(135deg, rgba(61, 125, 255, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%);
+
+    /* Spacing */
+    --na-space-1: 4px;
+    --na-space-2: 8px;
+    --na-space-3: 12px;
+    --na-space-4: 16px;
+    --na-space-5: 24px;
+    --na-space-6: 32px;
+    --na-space-7: 40px;
+    --na-space-8: 48px;
+    --na-space-9: 64px;
+
+    /* Radius */
+    --na-radius-sm: 6px;
+    --na-radius-md: 10px;
+    --na-radius-lg: 16px;
+
+    /* Shadow */
+    --na-shadow-1: 0 1px 2px rgba(0,0,0,.4);
+    --na-shadow-2: 0 6px 20px rgba(0,0,0,.45);
+}

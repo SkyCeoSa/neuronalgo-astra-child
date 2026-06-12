@@ -1,0 +1,201 @@
+/*
+ * NeuronAlgo Card Components
+ * Reusable card styles for strategy items, features, and content blocks
+ */
+
+/* ==========================================================================
+   Base Card Styles
+   ========================================================================== */
+
+.na-card {
+  background: var(--na-color-card-bg);
+  border: 1px solid var(--na-color-card-border);
+  border-radius: var(--na-radius-lg);
+  box-shadow: var(--na-shadow-card);
+  transition: var(--na-transition-normal);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.na-card:hover {
+  box-shadow: var(--na-shadow-md);
+  border-color: var(--na-color-border-hover);
+}
+
+.na-card:focus-within {
+  outline: 2px solid var(--na-color-accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Card Padding Variants
+   ========================================================================== */
+
+.na-card--sm {
+  padding: var(--na-space-16);
+}
+
+.na-card--md {
+  padding: var(--na-space-24);
+}
+
+.na-card--lg {
+  padding: var(--na-space-32);
+}
+
+/* ==========================================================================
+   Card Header
+   ========================================================================== */
+
+.na-card__header {
+  margin-bottom: var(--na-space-16);
+  padding-bottom: var(--na-space-16);
+  border-bottom: 1px solid var(--na-color-border);
+}
+
+.na-card__header--no-border {
+  margin-bottom: var(--na-space-16);
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   Card Body
+   ========================================================================== */
+
+.na-card__body {
+  flex: 1;
+}
+
+.na-card__body + .na-card__footer {
+  margin-top: var(--na-space-16);
+}
+
+/* ==========================================================================
+   Card Footer
+   ========================================================================== */
+
+.na-card__footer {
+  margin-top: auto;
+  padding-top: var(--na-space-16);
+  border-top: 1px solid var(--na-color-border);
+}
+
+.na-card__footer--no-border {
+  margin-top: auto;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ==========================================================================
+   Feature Card
+   ========================================================================== */
+
+.na-card--feature {
+  text-align: center;
+  padding: var(--na-space-32);
+}
+
+.na-card--feature .na-card__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--na-space-24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--na-color-elevated-surface);
+  border-radius: var(--na-radius-xl);
+  font-size: 32px;
+}
+
+.na-card--feature .na-card__title {
+  margin-bottom: var(--na-space-12);
+}
+
+/* ==========================================================================
+   Pricing Card
+   ========================================================================== */
+
+.na-card--pricing {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.na-card--pricing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--na-color-accent);
+}
+
+.na-card--pricing.na-card--featured::before {
+  background: var(--na-color-warning);
+}
+
+.na-card--pricing .na-card__price {
+  margin: var(--na-space-24) 0;
+}
+
+.na-card--pricing .na-card__price-value {
+  font-family: var(--na-font-family-mono);
+  font-size: var(--na-font-size-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--na-color-text-primary);
+}
+
+.na-card--pricing .na-card__price-period {
+  font-size: var(--na-font-size-small);
+  color: var(--na-color-text-muted);
+}
+
+.na-card--pricing .na-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--na-space-24);
+  text-align: left;
+}
+
+.na-card--pricing .na-card__features li {
+  padding: var(--na-space-8) 0;
+  border-bottom: 1px solid var(--na-color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--na-space-8);
+}
+
+.na-card--pricing .na-card__features li:last-child {
+  border-bottom: none;
+}
+
+.na-card--pricing .na-card__features li::before {
+  content: '✓';
+  color: var(--na-color-positive);
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   Card Grid
+   ========================================================================== */
+
+.na-card-grid {
+  display: grid;
+  gap: var(--na-space-24);
+}
+
+.na-card-grid--2-cols {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.na-card-grid--3-cols {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.na-card-grid--4-cols {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}

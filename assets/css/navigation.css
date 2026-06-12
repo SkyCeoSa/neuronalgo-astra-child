@@ -1,0 +1,224 @@
+/**
+ * NeuronAlgo Navigation Styles
+ *
+ * Scoped navigation styles using design tokens from variables.css
+ */
+
+/* ==========================================================================
+   Primary Navigation
+   ========================================================================== */
+
+.na-primary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.na-primary-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--na-space-md, 1rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.na-primary-nav__item {
+    margin: 0;
+}
+
+.na-primary-nav__link {
+    display: block;
+    padding: var(--na-space-sm, 0.5rem) var(--na-space-md, 1rem);
+    color: var(--na-text-primary, #1a1a1a);
+    font-family: var(--na-font-family-base, inherit);
+    font-weight: var(--na-font-weight-medium, 500);
+    font-size: var(--na-font-size-base, 1rem);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.na-primary-nav__link:hover,
+.na-primary-nav__link:focus {
+    color: var(--na-text-accent, #0066cc);
+}
+
+.na-primary-nav__cta {
+    margin-left: var(--na-space-lg, 2rem);
+}
+
+/* Mobile Menu Toggle */
+.na-primary-nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+
+.na-primary-nav__toggle-bar {
+    width: 100%;
+    height: 2px;
+    background: var(--na-text-primary, #1a1a1a);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 0.09rem center;
+}
+
+/* Mobile Menu Overlay */
+.na-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--na-background-primary, #ffffff);
+    z-index: 5;
+    padding-top: var(--na-space-xxl, 4rem);
+}
+
+.na-mobile-menu.active {
+    display: block;
+}
+
+.na-mobile-menu__list {
+    list-style: none;
+    padding: var(--na-space-lg, 2rem);
+    margin: 0;
+}
+
+.na-mobile-menu__item {
+    margin-bottom: var(--na-space-md, 1rem);
+}
+
+.na-mobile-menu__link {
+    display: block;
+    padding: var(--na-space-sm, 0.5rem) 0;
+    color: var(--na-text-primary, #1a1a1a);
+    font-size: var(--na-font-size-lg, 1.125rem);
+    font-weight: var(--na-font-weight-medium, 500);
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Secondary Navigation
+   ========================================================================== */
+
+.na-secondary-nav {
+    background: var(--na-background-secondary, #f5f5f5);
+    border-bottom: 1px solid var(--na-border-color, #e5e5e5);
+    padding: var(--na-space-xs, 0.25rem) 0;
+}
+
+.na-secondary-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--na-space-lg, 2rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.na-secondary-nav__link {
+    color: var(--na-text-secondary, #666666);
+    font-size: var(--na-font-size-sm, 0.875rem);
+    font-weight: var(--na-font-weight-normal, 400);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.na-secondary-nav__link:hover,
+.na-secondary-nav__link:focus {
+    color: var(--na-text-primary, #1a1a1a);
+}
+
+/* ==========================================================================
+   Footer Navigation
+   ========================================================================== */
+
+.na-footer-nav {
+    background: var(--na-background-primary, #ffffff);
+    border-top: 1px solid var(--na-border-color, #e5e5e5);
+    padding: var(--na-space-xl, 3rem) 0;
+}
+
+.na-footer-nav__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--na-space-xl, 3rem);
+}
+
+.na-footer-nav__column {
+    display: flex;
+    flex-direction: column;
+}
+
+.na-footer-nav__heading {
+    font-size: var(--na-font-size-base, 1rem);
+    font-weight: var(--na-font-weight-semibold, 600);
+    color: var(--na-text-primary, #1a1a1a);
+    margin-bottom: var(--na-space-md, 1rem);
+}
+
+.na-footer-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.na-footer-nav__link {
+    display: block;
+    padding: var(--na-space-xs, 0.25rem) 0;
+    color: var(--na-text-secondary, #666666);
+    font-size: var(--na-font-size-sm, 0.875rem);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.na-footer-nav__link:hover,
+.na-footer-nav__link:focus {
+    color: var(--na-text-primary, #1a1a1a);
+}
+
+.na-footer-nav__cta-strip {
+    margin-top: var(--na-space-xl, 2rem);
+    padding-top: var(--na-space-xl, 2rem);
+    border-top: 1px solid var(--na-border-color, #e5e5e5);
+    text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 921px) {
+    .na-primary-nav__menu {
+        display: none;
+    }
+
+    .na-primary-nav__toggle {
+        display: flex;
+    }
+
+    .na-secondary-nav {
+        display: none;
+    }
+
+    .na-footer-nav__columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 544px) {
+    .na-footer-nav__columns {
+        grid-template-columns: 1fr;
+    }
+}

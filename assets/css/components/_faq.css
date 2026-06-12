@@ -1,0 +1,174 @@
+/*
+ * NeuronAlgo FAQ Components
+ * Accordion-style interactive FAQ blocks
+ */
+
+/* ==========================================================================
+   FAQ Container
+   ========================================================================== */
+
+.na-faq {
+  background: var(--na-color-surface);
+  border: 1px solid var(--na-color-border);
+  border-radius: var(--na-radius-lg);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   FAQ Item
+   ========================================================================== */
+
+.na-faq-item {
+  border-bottom: 1px solid var(--na-color-border);
+}
+
+.na-faq-item:last-child {
+  border-bottom: none;
+}
+
+/* ==========================================================================
+   FAQ Question Button
+   ========================================================================== */
+
+.na-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--na-space-16);
+  padding: var(--na-space-24);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--na-transition-fast);
+}
+
+.na-faq-question:hover {
+  background: var(--na-color-surface-alt);
+}
+
+.na-faq-question:focus {
+  outline: 2px solid var(--na-color-accent);
+  outline-offset: -2px;
+}
+
+.na-faq-question__text {
+  flex: 1;
+  color: var(--na-color-text-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.na-faq-question__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--na-transition-fast);
+}
+
+.na-faq-question__icon::before {
+  content: '+';
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--na-color-accent);
+}
+
+.na-faq-question[aria-expanded="true"] .na-faq-question__icon::before {
+  content: '−';
+}
+
+/* ==========================================================================
+   FAQ Answer Panel
+   ========================================================================== */
+
+.na-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--na-transition-normal);
+}
+
+.na-faq-answer-inner {
+  padding: 0 var(--na-space-24) var(--na-space-24);
+  color: var(--na-color-text-secondary);
+  line-height: var(--na-line-height-relaxed);
+}
+
+.na-faq-answer-inner p {
+  margin: 0 0 var(--na-space-16);
+}
+
+.na-faq-answer-inner p:last-child {
+  margin-bottom: 0;
+}
+
+.na-faq-answer-inner ul,
+.na-faq-answer-inner ol {
+  margin: 0 0 var(--na-space-16);
+  padding-left: var(--na-space-24);
+}
+
+.na-faq-answer-inner li {
+  margin-bottom: var(--na-space-8);
+}
+
+/* ==========================================================================
+   FAQ Variants
+   ========================================================================== */
+
+.na-faq--compact .na-faq-question {
+  padding: var(--na-space-16);
+}
+
+.na-faq--spacious .na-faq-question {
+  padding: var(--na-space-32);
+}
+
+.na-faq--borderless {
+  border: none;
+}
+
+.na-faq--borderless .na-faq-item {
+  border-bottom: none;
+}
+
+.na-faq--borderless .na-faq-question {
+  border-radius: var(--na-radius-md);
+  background: var(--na-color-surface-alt);
+  margin-bottom: var(--na-space-8);
+}
+
+/* ==========================================================================
+   FAQ Group
+   ========================================================================== */
+
+.na-faq-group {
+  margin-bottom: var(--na-space-24);
+}
+
+.na-faq-group__title {
+  margin-bottom: var(--na-space-16);
+  padding-bottom: var(--na-space-8);
+  border-bottom: 2px solid var(--na-color-border);
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .na-faq-question {
+    padding: var(--na-space-16);
+    gap: var(--na-space-12);
+  }
+
+  .na-faq-question__text {
+    font-size: var(--na-font-size-small);
+  }
+
+  .na-faq-answer-inner {
+    padding: 0 var(--na-space-16) var(--na-space-16);
+  }
+}

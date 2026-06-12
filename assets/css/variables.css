@@ -1,0 +1,215 @@
+/*
+ * NeuronAlgo Design Tokens
+ * Institutional dark theme for quantitative trading platform
+ */
+
+/* ==========================================================================
+   Color Tokens - Surface System
+   ========================================================================== */
+
+:root {
+  /* Base Background - Near-black navy for institutional feel */
+  --na-color-background: #050507;
+
+  /* Main Surface - Dark graphite for cards/containers */
+  --na-color-surface: #121212;
+
+  /* Alternate Surface - Slate for elevated content */
+  --na-color-surface-alt: #1A1A1E;
+
+  /* Elevated Surface - Slightly lighter for modals/overlays */
+  --na-color-elevated-surface: #202024;
+
+  /* Border - Muted blue-gray for subtle separation */
+  --na-color-border: #2A2A32;
+
+  /* Border Hover - Slightly more visible */
+  --na-color-border-hover: #3A3A42;
+}
+
+/* ==========================================================================
+   Color Tokens - Text System
+   ========================================================================== */
+
+:root {
+  /* Primary Text - Off-white for main content */
+  --na-color-text-primary: #F5F5F7;
+
+  /* Secondary Text - Cool gray for supporting content */
+  --na-color-text-secondary: #D1D1D6;
+
+  /* Muted Text - Lower contrast for meta information */
+  --na-color-text-muted: #8E8E93;
+
+  /* Inverse Text - For use on dark backgrounds */
+  --na-color-text-inverse: #FFFFFF;
+}
+
+/* ==========================================================================
+   Color Tokens - Semantic Colors
+   ========================================================================== */
+
+:root {
+  /* Accent - Cool blue for primary actions and trust */
+  --na-color-accent: #0A84FF;
+
+  /* Accent Hover - Brighter for interactive states */
+  --na-color-accent-hover: #3D9DFF;
+
+  /* Positive - Green for profitable metrics */
+  --na-color-positive: #30D158;
+
+  /* Positive Muted - For backgrounds/borders */
+  --na-color-positive-muted: #30D15820;
+
+  /* Negative - Red for losses and drawdowns */
+  --na-color-negative: #FF453A;
+
+  /* Negative Muted - For backgrounds/borders */
+  --na-color-negative-muted: #FF453A20;
+
+  /* Warning - Gold for premium emphasis and alerts */
+  --na-color-warning: #FFD60A;
+
+  /* Warning Muted - For backgrounds */
+  --na-color-warning-muted: #FFD60A20;
+
+  /* Info - Teal for secondary accent information */
+  --na-color-info: #64D7FF;
+
+  /* Info Muted - For backgrounds */
+  --na-color-info-muted: #64D7FF20;
+}
+
+/* ==========================================================================
+   Color Tokens - Component States
+   ========================================================================== */
+
+:root {
+  /* Card Background */
+  --na-color-card-bg: var(--na-color-surface);
+
+  /* Card Border */
+  --na-color-card-border: var(--na-color-border);
+
+  /* Card Shadow */
+  --na-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* Button Primary Background */
+  --na-color-button-primary-bg: var(--na-color-accent);
+
+  /* Button Primary Hover */
+  --na-color-button-primary-bg-hover: var(--na-color-accent-hover);
+
+  /* Button Primary Text */
+  --na-color-button-primary-text: #FFFFFF;
+
+  /* Button Secondary Border */
+  --na-color-button-secondary-border: var(--na-color-border);
+
+  /* Button Secondary Text */
+  --na-color-button-secondary-text: var(--na-color-text-primary);
+
+  /* Badge Background */
+  --na-color-badge-bg: var(--na-color-surface-alt);
+
+  /* Badge Border */
+  --na-color-badge-border: var(--na-color-border);
+}
+
+/* ==========================================================================
+   Typography Tokens - Font Families
+   ========================================================================== */
+
+:root {
+  /* Primary Font - Inter for UI */
+  --na-font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Monospace Font - JetBrains Mono for metrics */
+  --na-font-family-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+
+  /* Base Font Size */
+  --na-font-size-base: 16px;
+
+  /* Line Height Scale */
+  --na-line-height-tight: 1.2;
+  --na-line-height-normal: 1.5;
+  --na-line-height-relaxed: 1.7;
+}
+
+/* ==========================================================================
+   Typography Tokens - Fluid Scale
+   ========================================================================== */
+
+:root {
+  /* Display - Hero titles */
+  --na-font-size-display: clamp(32px, 5vw, 48px);
+
+  /* H1 - Main headings */
+  --na-font-size-h1: clamp(28px, 4vw, 32px);
+
+  /* H2 - Section headings */
+  --na-font-size-h2: clamp(22px, 3vw, 24px);
+
+  /* H3 - Subsection headings */
+  --na-font-size-h3: clamp(18px, 2.5vw, 20px);
+
+  /* Body - Main content */
+  --na-font-size-body: 16px;
+
+  /* Small - Supporting text */
+  --na-font-size-small: 14px;
+
+  /* Micro - Labels and meta */
+  --na-font-size-micro: 12px;
+}
+
+/* ==========================================================================
+   Spacing Tokens - 4px Base Scale
+   ========================================================================== */
+
+:root {
+  --na-space-4: 0.25rem;   /* 4px */
+  --na-space-8: 0.5rem;   /* 8px */
+  --na-space-12: 0.75rem;  /* 12px */
+  --na-space-16: 1rem;    /* 16px */
+  --na-space-24: 1.5rem;  /* 24px */
+  --na-space-32: 2rem;    /* 32px */
+  --na-space-40: 2.5rem;  /* 40px */
+  --na-space-48: 3rem;    /* 48px */
+  --na-space-64: 4rem;    /* 64px */
+}
+
+/* ==========================================================================
+   Layout Tokens - Border Radius & Shadows
+   ========================================================================== */
+
+:root {
+  /* Border Radius */
+  --na-radius-sm: 4px;
+  --na-radius-md: 8px;
+  --na-radius-lg: 12px;
+  --na-radius-xl: 16px;
+
+  /* Shadows */
+  --na-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --na-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --na-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+  /* Transitions */
+  --na-transition-fast: 150ms ease-in-out;
+  --na-transition-normal: 250ms ease-in-out;
+  --na-transition-slow: 350ms ease-in-out;
+}
+
+/* ==========================================================================
+   Z-Index Tokens
+   ========================================================================== */
+
+:root {
+  --na-z-dropdown: 100;
+  --na-z-sticky: 200;
+  --na-z-fixed: 300;
+  --na-z-modal: 400;
+  --na-z-tooltip: 500;
+}

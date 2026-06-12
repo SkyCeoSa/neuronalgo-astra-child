@@ -1,0 +1,23 @@
+/*
+ * ApexCharts Base Styling Overrides
+ * Additional customizations for chart appearance in NeuronAlgo theme
+ */
+
+.apexcharts-canvas {
+    /* Root chart styles */
+}
+
+.apexcharts-tooltip {
+    box-shadow: var(--na-shadow-md, 0 2px 8px rgba(0, 0, 0, 0.3)) !important;
+}
+
+.apexcharts-xaxis-line,
+.apexcharts-yaxis-line {
+    stroke: var(--na-color-border, #2A2A32) !important;
+}
+
+.apexcharts-xaxis-grid-lines,
+.apexcharts-yaxis-grid-lines {
+    stroke: var(--na-color-border, #2A2A32) !important;
+    stroke-opacity: 0.3;
+}

@@ -1,0 +1,36 @@
+.na-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--na-font-sans);
+    color: var(--na-color-text);
+}
+
+.na-table th {
+    background-color: var(--na-color-surface-alt);
+    color: var(--na-color-text-secondary);
+    text-align: left;
+    padding: var(--na-space-3) var(--na-space-4);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.na-table td {
+    padding: var(--na-space-3) var(--na-space-4);
+    border-bottom: 1px solid var(--na-color-border);
+    font-size: 0.875rem;
+}
+
+.na-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.na-table tbody tr:hover {
+    background-color: var(--na-color-surface-alt);
+}
+
+.na-table .na-num {
+    font-family: var(--na-font-mono);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}

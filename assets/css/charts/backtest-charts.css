@@ -1,0 +1,173 @@
+/*
+ * NeuronAlgo Backtest Charts Styling
+ * Scoped styling for equity and drawdown chart containers
+ */
+
+/* ==========================================================================
+   Chart Container Base
+   ========================================================================== */
+
+.na-backtest-chart-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.na-chart-container {
+    background: var(--na-color-surface, #121212);
+    border: 1px solid var(--na-color-border, #2A2A32);
+    border-radius: var(--na-radius-md, 8px);
+    padding: var(--na-space-16, 1rem);
+    box-shadow: var(--na-shadow-card, 0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.na-chart-title {
+    font-family: var(--na-font-family-primary, 'Inter', sans-serif);
+    font-size: var(--na-font-size-h3, 20px);
+    color: var(--na-color-text-primary, #F5F5F7);
+    margin: 0 0 var(--na-space-16, 1rem) 0;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Chart Canvas Container
+   ========================================================================== */
+
+.na-chart-canvas {
+    position: relative;
+    width: 100%;
+}
+
+.na-chart-canvas--equity {
+    /* Equity chart uses accent color */
+}
+
+.na-chart-canvas--drawdown {
+    /* Drawdown chart uses negative color */
+}
+
+/* ==========================================================================
+   Loading Skeleton
+   ========================================================================== */
+
+.na-chart-skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        var(--na-color-surface, #121212) 25%,
+        var(--na-color-surface-alt, #1A1A1E) 50%,
+        var(--na-color-surface, #121212) 75%
+    );
+    background-size: 200% 100%;
+    animation: na-skeleton-loading 1.5s infinite;
+    border-radius: var(--na-radius-sm, 4px);
+}
+
+.na-chart-skeleton--hidden {
+    display: none;
+}
+
+.na-chart-skeleton-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--na-color-surface-alt, #1A1A1E);
+    animation: na-skeleton-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes na-skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes na-skeleton-pulse {
+    0% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   Empty/Error States
+   ========================================================================== */
+
+.na-chart-empty,
+.na-chart-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--na-color-text-secondary, #D1D1D6);
+    font-family: var(--na-font-family-primary, 'Inter', sans-serif);
+    font-size: var(--na-font-size-body, 16px);
+}
+
+.na-chart-empty-icon,
+.na-chart-error-icon {
+    margin-right: var(--na-space-8, 0.5rem);
+    font-size: 24px;
+}
+
+/* ==========================================================================
+   Responsive Chart Heights
+   ========================================================================== */
+
+.na-chart-wrapper--height-sm {
+    min-height: 250px;
+}
+
+.na-chart-wrapper--height-md {
+    min-height: 350px;
+}
+
+.na-chart-wrapper--height-lg {
+    min-height: 450px;
+}
+
+.na-chart-wrapper--height-xl {
+    min-height: 500px;
+}
+
+/* ==========================================================================
+   ApexCharts Overrides (scoped to chart containers)
+   ========================================================================== */
+
+.na-chart-canvas .apexcharts-canvas {
+    font-family: var(--na-font-family-mono, 'JetBrains Mono', monospace) !important;
+}
+
+.na-chart-canvas .apexcharts-text {
+    font-family: var(--na-font-family-primary, 'Inter', sans-serif) !important;
+}
+
+.na-chart-canvas .apexcharts-xaxis-label,
+.na-chart-canvas .apexcharts-yaxis-label {
+    fill: var(--na-color-text-secondary, #D1D1D6) !important;
+}
+
+.na-chart-canvas .apexcharts-grid-line {
+    stroke: var(--na-color-border, #2A2A32) !important;
+}
+
+.na-chart-canvas .apexcharts-tooltip {
+    background: var(--na-color-elevated-surface, #202024) !important;
+    border: 1px solid var(--na-color-border, #2A2A32) !important;
+    border-radius: var(--na-radius-sm, 4px) !important;
+}
+
+.na-chart-canvas .apexcharts-tooltip-title {
+    background: var(--na-color-surface-alt, #1A1A1E) !important;
+    color: var(--na-color-text-primary, #F5F5F7) !important;
+    font-family: var(--na-font-family-mono, 'JetBrains Mono', monospace) !important;
+}

@@ -1,0 +1,37 @@
+.na-metric {
+    background-color: var(--na-color-surface);
+    border: 1px solid var(--na-color-border);
+    border-radius: var(--na-radius-md);
+    padding: var(--na-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--na-space-1);
+}
+
+.na-metric-value {
+    font-family: var(--na-font-mono);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--na-color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.na-metric-label {
+    color: var(--na-color-text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Modifiers */
+.na-metric-positive .na-metric-value {
+    color: var(--na-color-positive);
+}
+
+.na-metric-negative .na-metric-value {
+    color: var(--na-color-negative);
+}
+
+.na-metric-accent .na-metric-value {
+    color: var(--na-color-accent);
+}

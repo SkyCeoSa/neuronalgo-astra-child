@@ -1,0 +1,132 @@
+/*
+ * NeuronAlgo CTA Blocks
+ * High-impact call-to-action sections
+ */
+
+/* ==========================================================================
+   CTA Block Base
+   ========================================================================== */
+
+.na-cta {
+  background: var(--na-color-surface);
+  border: 1px solid var(--na-color-border);
+  border-radius: var(--na-radius-lg);
+  padding: var(--na-space-32);
+  text-align: center;
+  transition: var(--na-transition-normal);
+}
+
+.na-cta:hover {
+  box-shadow: var(--na-shadow-md);
+  border-color: var(--na-color-border-hover);
+}
+
+/* ==========================================================================
+   CTA Variants
+   ========================================================================== */
+
+.na-cta--primary {
+  background: linear-gradient(135deg, var(--na-color-surface) 0%, var(--na-color-elevated-surface) 100%);
+  border-color: var(--na-color-accent);
+}
+
+.na-cta--warning {
+  background: linear-gradient(135deg, var(--na-color-surface) 0%, var(--na-color-warning-muted) 100%);
+  border-color: var(--na-color-warning);
+}
+
+.na-cta--compact {
+  padding: var(--na-space-24);
+}
+
+.na-cta--spacious {
+  padding: var(--na-space-48);
+}
+
+/* ==========================================================================
+   CTA Content
+   ========================================================================== */
+
+.na-cta__title {
+  margin-bottom: var(--na-space-12);
+  color: var(--na-color-text-primary);
+}
+
+.na-cta__text {
+  margin-bottom: var(--na-space-24);
+  color: var(--na-color-text-secondary);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.na-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--na-space-16);
+  justify-content: center;
+}
+
+.na-cta__actions--stacked {
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ==========================================================================
+   CTA with Background Image
+   ========================================================================== */
+
+.na-cta--with-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.na-cta--with-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 5, 7, 0.85);
+  z-index: 0;
+}
+
+.na-cta--with-image .na-cta__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   CTA Highlight Bar
+   ========================================================================== */
+
+.na-cta--highlight {
+  border-top: 3px solid var(--na-color-accent);
+}
+
+.na-cta--highlight.na-cta--warning {
+  border-top-color: var(--na-color-warning);
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .na-cta {
+    padding: var(--na-space-24);
+  }
+
+  .na-cta--spacious {
+    padding: var(--na-space-32);
+  }
+
+  .na-cta__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}

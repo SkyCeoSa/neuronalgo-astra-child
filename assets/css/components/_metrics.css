@@ -1,0 +1,160 @@
+/*
+ * NeuronAlgo Metric Components
+ * Performance metrics display for trading strategies
+ */
+
+/* ==========================================================================
+   Metric Wrapper
+   ========================================================================== */
+
+.na-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--na-space-4);
+}
+
+.na-metric--inline {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--na-space-8);
+}
+
+/* ==========================================================================
+   Metric Label
+   ========================================================================== */
+
+.na-metric__label {
+  font-family: var(--na-font-family-primary);
+  font-size: var(--na-font-size-micro);
+  font-weight: 500;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Metric Value
+   ========================================================================== */
+
+.na-metric__value {
+  font-family: var(--na-font-family-mono);
+  font-size: var(--na-font-size-h3);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-primary);
+}
+
+.na-metric__value--lg {
+  font-size: var(--na-font-size-display);
+  font-weight: 700;
+}
+
+.na-metric__value--sm {
+  font-size: var(--na-font-size-small);
+}
+
+.na-metric__value--positive {
+  color: var(--na-color-positive);
+}
+
+.na-metric__value--negative {
+  color: var(--na-color-negative);
+}
+
+.na-metric__value--warning {
+  color: var(--na-color-warning);
+}
+
+.na-metric__value--info {
+  color: var(--na-color-info);
+}
+
+/* ==========================================================================
+   Metric Trend Indicator
+   ========================================================================== */
+
+.na-metric__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--na-space-4);
+  font-size: var(--na-font-size-small);
+  font-family: var(--na-font-family-mono);
+}
+
+.na-metric__trend--positive {
+  color: var(--na-color-positive);
+}
+
+.na-metric__trend--negative {
+  color: var(--na-color-negative);
+}
+
+.na-metric__trend-icon {
+  font-size: 1.2em;
+}
+
+/* ==========================================================================
+   Metric Grid
+   ========================================================================== */
+
+.na-metric-grid {
+  display: grid;
+  gap: var(--na-space-24);
+}
+
+.na-metric-grid--2-cols {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.na-metric-grid--3-cols {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.na-metric-grid--4-cols {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+/* ==========================================================================
+   Metric Badge
+   ========================================================================== */
+
+.na-metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--na-space-4);
+  padding: var(--na-space-4) var(--na-space-8);
+  background: var(--na-color-badge-bg);
+  border: 1px solid var(--na-color-badge-border);
+  border-radius: var(--na-radius-xl);
+  font-family: var(--na-font-family-mono);
+  font-size: var(--na-font-size-micro);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: var(--na-line-height-tight);
+}
+
+.na-metric-badge--positive {
+  background: var(--na-color-positive-muted);
+  border-color: var(--na-color-positive);
+  color: var(--na-color-positive);
+}
+
+.na-metric-badge--negative {
+  background: var(--na-color-negative-muted);
+  border-color: var(--na-color-negative);
+  color: var(--na-color-negative);
+}
+
+.na-metric-badge--warning {
+  background: var(--na-color-warning-muted);
+  border-color: var(--na-color-warning);
+  color: var(--na-color-warning);
+}
+
+.na-metric-badge--info {
+  background: var(--na-color-info-muted);
+  border-color: var(--na-color-info);
+  color: var(--na-color-info);
+}

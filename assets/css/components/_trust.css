@@ -1,0 +1,165 @@
+/*
+ * NeuronAlgo Trust Components
+ * Testimonial and certification displays for building credibility
+ */
+
+/* ==========================================================================
+   Testimonial Card
+   ========================================================================== */
+
+.na-testimonial {
+  background: var(--na-color-surface);
+  border: 1px solid var(--na-color-border);
+  border-radius: var(--na-radius-lg);
+  padding: var(--na-space-24);
+  transition: var(--na-transition-normal);
+}
+
+.na-testimonial:hover {
+  box-shadow: var(--na-shadow-md);
+  border-color: var(--na-color-border-hover);
+}
+
+.na-testimonial__quote {
+  position: relative;
+  margin-bottom: var(--na-space-16);
+  color: var(--na-color-text-secondary);
+  line-height: var(--na-line-height-relaxed);
+}
+
+.na-testimonial__quote::before {
+  content: '"';
+  position: absolute;
+  top: -var(--na-space-16);
+  left: -var(--na-space-8);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--na-color-accent);
+  opacity: 0.2;
+  font-family: var(--na-font-family-mono);
+}
+
+.na-testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: var(--na-space-12);
+}
+
+.na-testimonial__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--na-color-border);
+}
+
+.na-testimonial__author-info {
+  flex: 1;
+}
+
+.na-testimonial__author-name {
+  color: var(--na-color-text-primary);
+  font-weight: 600;
+  margin-bottom: var(--na-space-4);
+}
+
+.na-testimonial__author-title {
+  color: var(--na-color-text-muted);
+  font-size: var(--na-font-size-small);
+}
+
+/* ==========================================================================
+   Certification Badge
+   ========================================================================== */
+
+.na-certification {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--na-space-8);
+  padding: var(--na-space-8) var(--na-space-16);
+  background: var(--na-color-surface-alt);
+  border: 1px solid var(--na-color-border);
+  border-radius: var(--na-radius-xl);
+  font-size: var(--na-font-size-small);
+}
+
+.na-certification__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.na-certification__name {
+  color: var(--na-color-text-secondary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Trust Grid
+   ========================================================================== */
+
+.na-trust-grid {
+  display: grid;
+  gap: var(--na-space-24);
+}
+
+.na-trust-grid--logos {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  align-items: center;
+  justify-items: center;
+}
+
+.na-trust-grid--testimonials {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* ==========================================================================
+   Logo Item
+   ========================================================================== */
+
+.na-logo-item {
+  opacity: 0.6;
+  transition: var(--na-transition-normal);
+  filter: grayscale(100%);
+}
+
+.na-logo-item:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+.na-logo-item img {
+  max-height: 40px;
+  width: auto;
+}
+
+/* ==========================================================================
+   Statistics Block
+   ========================================================================== */
+
+.na-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--na-space-32);
+  justify-content: center;
+}
+
+.na-stats__item {
+  text-align: center;
+}
+
+.na-stats__value {
+  font-family: var(--na-font-family-mono);
+  font-size: var(--na-font-size-display);
+  font-weight: 700;
+  color: var(--na-color-accent);
+  line-height: 1;
+  margin-bottom: var(--na-space-8);
+}
+
+.na-stats__label {
+  color: var(--na-color-text-muted);
+  font-size: var(--na-font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

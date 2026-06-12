@@ -1,0 +1,34 @@
+.na-card {
+    background-color: var(--na-color-surface);
+    border: 1px solid var(--na-color-border);
+    border-radius: var(--na-radius-md);
+    padding: var(--na-space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--na-space-3);
+}
+
+.na-card-header {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--na-color-text);
+    margin-bottom: var(--na-space-2);
+}
+
+.na-card-body {
+    color: var(--na-color-text-secondary);
+    line-height: 1.5;
+}
+
+.na-card-footer {
+    margin-top: var(--na-space-3);
+    padding-top: var(--na-space-3);
+    border-top: 1px solid var(--na-color-border);
+    color: var(--na-color-text-muted);
+    font-size: 0.875rem;
+}
+
+.na-card-elevated {
+    background-color: var(--na-color-elevated);
+    box-shadow: var(--na-shadow-2);
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuronAlgo Components Style Guide</title>
+    <link rel="stylesheet" href="../assets/css/base/variables.css">
+    <link rel="stylesheet" href="../assets/css/base/typography.css">
+    <link rel="stylesheet" href="../assets/css/base/utilities.css">
+    <link rel="stylesheet" href="../assets/css/components/index.css">
+    <style>
+        body {
+            font-family: var(--na-font-sans);
+            background-color: var(--na-color-bg);
+            color: var(--na-color-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: var(--na-space-6);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--na-color-text);
+            margin-top: var(--na-space-6);
+            margin-bottom: var(--na-space-3);
+        }
+        section {
+            margin-bottom: var(--na-space-9);
+            padding-bottom: var(--na-space-6);
+            border-bottom: 1px solid var(--na-color-border);
+        }
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--na-space-4);
+        }
+        .component-preview {
+            background-color: var(--na-color-surface-alt);
+            border: 1px solid var(--na-color-border);
+            border-radius: var(--na-radius-md);
+            padding: var(--na-space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--na-space-3);
+            align-items: flex-start;
+        }
+        .na-table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+        .na-empty-state-container,
+        .na-loading-skeleton-container,
+        .na-error-state-container {
+            padding: var(--na-space-5);
+            background-color: var(--na-color-surface);
+            border-radius: var(--na-radius-md);
+            margin-top: var(--na-space-4);
+        }
+        .na-loading-skeleton.example {
+            width: 100%;
+            height: 80px;
+            margin-top: var(--na-space-4);
+        }
+        .na-icon {
+            /* For example purposes, using a simple square for icon representation */
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            background-color: currentColor;
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>');
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>NeuronAlgo Components Style Guide</h1>
+
+    <section>
+        <h2>Buttons</h2>
+        <div class="component-grid">
+            <div class="component-preview">
+                <h3>Primary Button</h3>
+                <button class="na-btn na-btn-primary">Primary Button</button>
+                <button class="na-btn na-btn-primary na-btn-sm">Small Primary</button>
+                <button class="na-btn na-btn-primary na-btn-lg">Large Primary</button>
+                <button class="na-btn na-btn-primary" autofocus>Primary Focus</button>
+            </div>
+            <div class="component-preview">
+                <h3>Secondary Button</h3>
+                <button class="na-btn na-btn-secondary">Secondary Button</button>
+                <button class="na-btn na-btn-secondary na-btn-sm">Small Secondary</button>
+                <button class="na-btn na-btn-secondary na-btn-lg">Large Secondary</button>
+                <button class="na-btn na-btn-secondary" autofocus>Secondary Focus</button>
+            </div>
+            <div class="component-preview">
+                <h3>Ghost Button</h3>
+                <button class="na-btn na-btn-ghost">Ghost Button</button>
+                <button class="na-btn na-btn-ghost na-btn-sm">Small Ghost</button>
+                <button class="na-btn na-btn-ghost na-btn-lg">Large Ghost</button>
+                <button class="na-btn na-btn-ghost" autofocus>Ghost Focus</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Cards</h2>
+        <div class="component-grid">
+            <div class="component-preview" style="align-items: stretch; padding: 0;">
+                <div class="na-card">
+                    <div class="na-card-header">Default Card Header</div>
+                    <div class="na-card-body">This is the body of a default card. It can contain various content elements.</div>
+                    <div class="na-card-footer">Default Card Footer</div>
+                </div>
+            </div>
+            <div class="component-preview" style="align-items: stretch; padding: 0;">
+                <div class="na-card na-card-elevated">
+                    <div class="na-card-header">Elevated Card Header</div>
+                    <div class="na-card-body">This is the body of an elevated card, showcasing a shadow effect.</div>
+                    <div class="na-card-footer">Elevated Card Footer</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Metric Tiles</h2>
+        <div class="component-grid">
+            <div class="na-metric na-metric-accent">
+                <span class="na-metric-value">1.39</span>
+                <span class="na-metric-label">Sharpe Ratio</span>
+            </div>
+            <div class="na-metric na-metric-positive">
+                <span class="na-metric-value">68.05%</span>
+                <span class="na-metric-label">Win Rate</span>
+            </div>
+            <div class="na-metric na-metric-negative">
+                <span class="na-metric-value">10.69%</span>
+                <span class="na-metric-label">Max Drawdown</span>
+            </div>
+            <div class="na-metric na-metric-accent">
+                <span class="na-metric-value">1.89</span>
+                <span class="na-metric-label">Profit Factor</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Badges</h2>
+        <div class="component-preview" style="flex-direction: row; gap: var(--na-space-3);">
+            <span class="na-badge na-badge-positive">Live</span>
+            <span class="na-badge na-badge-negative">Stopped</span>
+            <span class="na-badge na-badge-neutral">Draft</span>
+            <span class="na-badge na-badge-info">Info</span>
+            <span class="na-badge na-badge-warning">Warning</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Tables</h2>
+        <div class="na-table-container">
+            <table class="na-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th class="na-num">CAGR %</th>
+                        <th class="na-num">Max DD %</th>
+                        <th class="na-num">Sharpe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Strategy Alpha</td>
+                        <td><span class="na-badge na-badge-positive">Live</span></td>
+                        <td class="na-num">15.23</td>
+                        <td class="na-num">-8.12</td>
+                        <td class="na-num">1.25</td>
+                    </tr>
+                    <tr>
+                        <td>Strategy Beta</td>
+                        <td><span class="na-badge na-badge-neutral">Draft</span></td>
+                        <td class="na-num">8.76</td>
+                        <td class="na-num">-5.50</td>
+                        <td class="na-num">0.98</td>
+                    </tr>
+                    <tr>
+                        <td>Strategy Gamma</td>
+                        <td><span class="na-badge na-badge-negative">Stopped</span></td>
+                        <td class="na-num">-2.10</td>
+                        <td class="na-num">-15.30</td>
+                        <td class="na-num">-0.35</td>
+                    </tr>
+                    <tr>
+                        <td>Strategy Delta</td>
+                        <td><span class="na-badge na-badge-info">Review</span></td>
+                        <td class="na-num">22.40</td>
+                        <td class="na-num">-10.15</td>
+                        <td class="na-num">1.80</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>States</h2>
+        <div class="component-grid">
+            <div class="na-empty-state-container">
+                <h3>Empty State</h3>
+                <div class="na-empty-state">
+                    <span class="na-icon">&#x1F4C4;</span> <!-- Placeholder for a document icon -->
+                    <div class="na-title">No Data Available</div>
+                    <div class="na-description">It looks like there's no data to display here yet. Please try again later or adjust your filters.</div>
+                </div>
+            </div>
+            <div class="na-loading-skeleton-container">
+                <h3>Loading Skeleton</h3>
+                <div class="na-loading-skeleton example"></div>
+            </div>
+            <div class="na-error-state-container">
+                <h3>Error State</h3>
+                <div class="na-error-state">
+                    <span class="na-icon">&#x26A0;&#xFE0F;</span> <!-- Placeholder for a warning icon -->
+                    <div class="na-title">Something Went Wrong</div>
+                    <div class="na-description">We encountered an error while trying to load the data. Please refresh the page or contact support.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

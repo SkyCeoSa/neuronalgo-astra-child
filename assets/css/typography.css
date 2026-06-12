@@ -1,0 +1,206 @@
+/*
+ * NeuronAlgo Typography System
+ * Fluid typography for quantitative trading platform
+ */
+
+/* ==========================================================================
+   Font Imports
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ==========================================================================
+   Root Typography Settings
+   ========================================================================== */
+
+:root {
+  font-size: var(--na-font-size-base);
+  line-height: var(--na-line-height-normal);
+  font-family: var(--na-font-family-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Fluid Typography Scale
+   ========================================================================== */
+
+.na-display, .na-h1 { font-size: var(--na-font-size-display); }
+.na-h2 { font-size: var(--na-font-size-h2); }
+.na-h3 { font-size: var(--na-font-size-h3); }
+.na-body, .na-p { font-size: var(--na-font-size-body); }
+.na-small, small { font-size: var(--na-font-size-small); }
+.na-micro { font-size: var(--na-font-size-micro); }
+
+/* ==========================================================================
+   Heading Base Styles
+   ========================================================================== */
+
+.na-display,
+.na-h1,
+.na-h2,
+.na-h3,
+.na-h4,
+.na-h5,
+.na-h6 {
+  font-family: var(--na-font-family-primary);
+  font-weight: 600;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-primary);
+  margin-top: 0;
+  margin-bottom: var(--na-space-16);
+}
+
+/* Heading weight variations */
+.na-display { font-weight: 700; }
+.na-h1 { font-weight: 700; }
+.na-h2 { font-weight: 600; }
+.na-h3 { font-weight: 600; }
+.na-h4 { font-weight: 500; }
+.na-h5 { font-weight: 500; }
+
+/* ==========================================================================
+   Body Typography
+   ========================================================================== */
+
+.na-body,
+.na-p {
+  font-family: var(--na-font-family-primary);
+  font-weight: 400;
+  line-height: var(--na-line-height-normal);
+  color: var(--na-color-text-secondary);
+  margin-top: 0;
+  margin-bottom: var(--na-space-16);
+}
+
+.na-body strong,
+.na-p strong {
+  color: var(--na-color-text-primary);
+  font-weight: 600;
+}
+
+.na-body a,
+.na-p a {
+  color: var(--na-color-accent);
+  text-decoration: none;
+  transition: var(--na-transition-fast);
+}
+
+.na-body a:hover,
+.na-p a:hover {
+  color: var(--na-color-accent-hover);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Label Typography
+   ========================================================================== */
+
+.na-label,
+.na-micro,
+small {
+  font-family: var(--na-font-family-primary);
+  font-weight: 500;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Metric Typography (Financial Data)
+   ========================================================================== */
+
+.na-metric-value,
+.na-price,
+.na-percentage,
+.na-numeric {
+  font-family: var(--na-font-family-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-primary);
+}
+
+.na-metric-value--positive {
+  color: var(--na-color-positive);
+}
+
+.na-metric-value--negative {
+  color: var(--na-color-negative);
+}
+
+.na-metric-value--warning {
+  color: var(--na-color-warning);
+}
+
+.na-metric-label {
+  font-family: var(--na-font-family-primary);
+  font-size: var(--na-font-size-micro);
+  font-weight: 500;
+  line-height: var(--na-line-height-tight);
+  color: var(--na-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--na-space-4);
+}
+
+/* ==========================================================================
+   Code & Technical Typography
+   ========================================================================== */
+
+.na-code,
+code,
+pre {
+  font-family: var(--na-font-family-mono);
+  font-size: var(--na-font-size-small);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  line-height: var(--na-line-height-normal);
+}
+
+.na-code {
+  background: var(--na-color-surface-alt);
+  border: 1px solid var(--na-color-border);
+  border-radius: var(--na-radius-sm);
+  padding: var(--na-space-4) var(--na-space-8);
+  color: var(--na-color-text-primary);
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.na-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.na-text-center {
+  text-align: center;
+}
+
+.na-text-left {
+  text-align: left;
+}
+
+.na-text-right {
+  text-align: right;
+}
+
+.na-font-normal {
+  font-weight: 400;
+}
+
+.na-font-medium {
+  font-weight: 500;
+}
+
+.na-font-semibold {
+  font-weight: 600;
+}
+
+.na-font-bold {
+  font-weight: 700;
+}

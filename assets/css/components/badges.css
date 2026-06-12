@@ -1,0 +1,38 @@
+.na-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--na-space-1) var(--na-space-2);
+    border-radius: var(--na-radius-sm);
+    font-family: var(--na-font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.na-badge-positive {
+    background-color: var(--na-color-positive-muted);
+    color: var(--na-color-positive);
+}
+
+.na-badge-negative {
+    background-color: var(--na-color-negative-muted);
+    color: var(--na-color-negative);
+}
+
+.na-badge-neutral {
+    background-color: var(--na-color-text-muted-alt);
+    color: var(--na-color-text-secondary);
+}
+
+.na-badge-info {
+    background-color: var(--na-color-info-muted);
+    color: var(--na-color-info);
+}
+
+.na-badge-warning {
+    background-color: var(--na-color-warning-muted);
+    color: var(--na-color-warning);
+}
