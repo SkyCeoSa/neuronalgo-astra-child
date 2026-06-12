@@ -5,13 +5,10 @@
       <stop offset="0.55" stop-color="#4f9bff"/>
       <stop offset="1" stop-color="#38bdf8"/>
     </linearGradient>
-    <mask id="naCutLk">
-      <rect x="10" y="10" width="120" height="120" rx="32" fill="#fff"/>
-      <path d="M44 92 L44 60 L86 92 L86 52" stroke="#000" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <polygon points="86,28 72,52 100,52" fill="#000"/>
-    </mask>
   </defs>
-  <rect x="10" y="10" width="120" height="120" rx="32" fill="url(#naGradientLk)" mask="url(#naCutLk)"/>
+  <rect x="10" y="10" width="120" height="120" rx="32" fill="url(#naGradientLk)" stroke="#2a3550" stroke-width="1.5"/>
+  <path d="M44 92 L44 60 L86 92 L86 44" stroke="#0a0e1a" stroke-width="14" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+  <polygon points="86,27 74,46 98,46" fill="#0a0e1a"/>
   <text x="162" y="88" font-family="'Space Grotesk','Inter',Arial,sans-serif" font-size="54" font-weight="700" letter-spacing="-1">
     <tspan fill="#e8ecf4">Neuron</tspan><tspan fill="#38bdf8">Algo</tspan>
   </text>
