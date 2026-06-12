@@ -50,6 +50,11 @@ require_once get_stylesheet_directory() . '/inc/class-na-menus.php';
 require_once get_stylesheet_directory() . '/inc/class-na-site-header.php';
 
 /**
+ * Include custom site footer class.
+ */
+require_once get_stylesheet_directory() . '/inc/class-na-site-footer.php';
+
+/**
  * Include internal linking framework.
  */
 require_once get_stylesheet_directory() . '/inc/class-na-internal-links.php';
