@@ -50,3 +50,29 @@ function na_register_chart_assets() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'na_register_chart_assets', 10 );
+
+/**
+ * Enqueue Strategy Library styles on the strategy CPT archive (FE-3.1).
+ *
+ * Loaded only on is_post_type_archive( 'strategy' ). Depends on the global
+ * design tokens + components handles. Versioned by filemtime for cache-busting
+ * during active development.
+ */
+function na_enqueue_strategy_library_assets() {
+    if ( ! is_post_type_archive( 'strategy' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $rel  = '/assets/css/sections/strategy-library.css';
+    $ver  = file_exists( $base . $rel ) ? filemtime( $base . $rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+
+    wp_enqueue_style(
+        'na-strategy-library',
+        get_stylesheet_directory_uri() . $rel,
+        array( 'na-design-tokens', 'na-components' ),
+        $ver,
+        'all'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_strategy_library_assets', 20 );
