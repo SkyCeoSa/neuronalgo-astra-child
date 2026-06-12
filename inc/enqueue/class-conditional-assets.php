@@ -82,7 +82,9 @@ add_action( 'wp_enqueue_scripts', 'na_enqueue_strategy_library_assets', 20 );
  *
  * Loaded only on is_singular( 'strategy' ). The chart bundle (na-apexcharts +
  * na-backtest-charts) is registered at priority 10 above; here we enqueue it for
- * the single-strategy equity curve. Section CSS is versioned by filemtime.
+ * the single-strategy equity curve. Section CSS is versioned by filemtime. The
+ * strategy-library stylesheet is also enqueued so the related-strategy cards
+ * (which reuse the FE-3.1 strategy-card markup) are styled on this template.
  */
 function na_enqueue_single_strategy_assets() {
     if ( ! is_singular( 'strategy' ) ) {
@@ -98,6 +100,18 @@ function na_enqueue_single_strategy_assets() {
         get_stylesheet_directory_uri() . $rel,
         array( 'na-design-tokens', 'na-components' ),
         $ver,
+        'all'
+    );
+
+    // Related-strategy cards reuse the FE-3.1 strategy-card styles.
+    $lib_rel = '/assets/css/sections/strategy-library.css';
+    $lib_ver = file_exists( $base . $lib_rel ) ? filemtime( $base . $lib_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+
+    wp_enqueue_style(
+        'na-strategy-library',
+        get_stylesheet_directory_uri() . $lib_rel,
+        array( 'na-design-tokens', 'na-components' ),
+        $lib_ver,
         'all'
     );
 

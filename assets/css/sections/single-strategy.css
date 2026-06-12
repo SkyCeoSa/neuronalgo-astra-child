@@ -1,160 +1,401 @@
 /**
- * Single Strategy section styles (FE-3.2).
- * Scoped under .na-strategy-single. Relies on global design tokens
- * (--na-color-*, --na-space-*, --na-radius-*) with safe fallbacks.
+ * Single Strategy section styles (FE-3.2) — "The Desk" treatment.
+ *
+ * Self-contained dark canvas so the strategy single matches the landing
+ * "desk" aesthetic even though landing.css is NOT enqueued here. Everything is
+ * scoped to .na-strategy-single / body.single-strategy so no other template is
+ * affected. Token names mirror landing.css — var(--token, <brand fallback>) —
+ * which is what actually paints the approved palette in this project.
  */
 
+/* ===================================================================
+   1. Dark "desk" canvas — neutralize Astra's light boxed content shell
+   =================================================================== */
+body.single-strategy {
+	background-color: var(--na-color-bg, #0a0e1a) !important;
+	background-image:
+		radial-gradient(1000px circle at 50% -8%, rgba(56, 189, 248, 0.08), transparent 60%),
+		radial-gradient(760px circle at 12% 4%, rgba(61, 125, 255, 0.10), transparent 55%) !important;
+	background-attachment: fixed;
+	color: var(--na-color-text, #e8ecf4);
+}
+
+body.single-strategy #content,
+body.single-strategy .site-content,
+body.single-strategy .ast-container,
+body.single-strategy #primary,
+body.single-strategy .content-area,
+body.single-strategy .ast-article-single,
+body.single-strategy .ast-article-post,
+body.single-strategy .ast-separate-container .ast-article-post,
+body.single-strategy .entry-content {
+	background: transparent !important;
+	box-shadow: none !important;
+	border: 0 !important;
+	max-width: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+/* ===================================================================
+   2. Shell container
+   =================================================================== */
 .na-strategy-single {
-	max-width: 1080px;
+	max-width: 1160px;
 	margin: 0 auto;
-	padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem) 4rem;
-	color: var(--na-color-text, #E8ECF4);
+	padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1rem, 4vw, 2rem) 5rem;
+	color: var(--na-color-text, #e8ecf4);
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .na-strategy-single-inner {
 	display: flex;
 	flex-direction: column;
 	gap: clamp(2rem, 5vw, 3.5rem);
+	background: transparent;
 }
 
-/* Hero */
+/* ===================================================================
+   3. Local helpers (mirrored from landing.css; scoped to this template)
+   =================================================================== */
+.na-strategy-single .na-panel {
+	position: relative;
+	background: var(--na-color-surface, #121829);
+	border: 1px solid var(--na-color-border, #2a3550);
+	border-radius: 18px;
+	box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+}
+.na-strategy-single .na-panel::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	z-index: 3;
+	pointer-events: none;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.10) 18%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.10) 82%, transparent);
+}
+.na-strategy-single .na-glow-border {
+	box-shadow: 0 44px 110px -50px rgba(0, 0, 0, 0.95), 0 0 70px -34px rgba(61, 125, 255, 0.4);
+}
+.na-strategy-single .na-glow-border::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1px;
+	z-index: 4;
+	background: linear-gradient(140deg, rgba(61, 125, 255, 0.6), rgba(56, 189, 248, 0.18) 42%, rgba(42, 53, 80, 0) 72%);
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	        mask-composite: exclude;
+	pointer-events: none;
+}
+.na-strategy-single .na-eyebrow {
+	display: inline-block;
+	font-family: var(--na-mono, 'JetBrains Mono', ui-monospace, monospace);
+	font-size: 12px;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--na-color-accent-2, #38bdf8);
+	margin: 0 0 6px;
+}
+.na-strategy-single .na-micro {
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--na-color-text-muted, #6b7896);
+}
+.na-strategy-single .na-tab {
+	font-variant-numeric: tabular-nums;
+	font-family: var(--na-mono, 'JetBrains Mono', ui-monospace, monospace);
+}
+.na-strategy-single .na-h2 {
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 700;
+	font-size: clamp(1.5rem, 3vw, 2.1rem);
+	letter-spacing: -0.02em;
+	line-height: 1.12;
+	color: var(--na-color-text, #e8ecf4);
+}
+.na-strategy-single .na-section-lead {
+	font-size: 1.0625rem;
+	line-height: 1.6;
+	color: var(--na-color-text-secondary, #9aa7c2);
+	margin: 0;
+}
+.na-strategy-single .na-pos { color: var(--na-color-positive, #22c55e); }
+.na-strategy-single .na-neg { color: var(--na-color-negative, #ef4444); }
+
+/* Button fallbacks (scoped) so CTAs look identical to the landing desk even
+   though landing.css is not present on this page. */
+.na-strategy-single .na-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	text-decoration: none;
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 600;
+	font-size: 15px;
+	letter-spacing: -0.01em;
+	padding: 13px 22px;
+	border-radius: 12px;
+	border: 1px solid transparent;
+	transition: transform 0.18s ease, box-shadow 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.na-strategy-single .na-btn-primary {
+	background: var(--na-gradient-brand, linear-gradient(135deg, #3d7dff, #38bdf8));
+	color: #fff;
+	box-shadow: 0 8px 28px -8px rgba(61, 125, 255, 0.6);
+}
+.na-strategy-single .na-btn-primary:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 14px 38px -8px rgba(61, 125, 255, 0.7);
+}
+.na-strategy-single .na-btn-ghost {
+	background: transparent;
+	color: var(--na-color-text, #e8ecf4);
+	border-color: var(--na-color-border, #2a3550);
+}
+.na-strategy-single .na-btn-ghost:hover {
+	border-color: var(--na-color-accent, #3d7dff);
+	background: rgba(61, 125, 255, 0.06);
+}
+
+/* ===================================================================
+   4. Hero
+   =================================================================== */
 .na-strategy-hero {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	padding: clamp(1.5rem, 4vw, 2.5rem);
-	border-radius: var(--na-radius-lg, 16px);
+	gap: 0.9rem;
+	padding: clamp(1.75rem, 4vw, 2.75rem);
+	overflow: hidden;
 }
-
+.na-strategy-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background: radial-gradient(620px circle at 12% -30%, rgba(61, 125, 255, 0.18), transparent 60%);
+}
+.na-strategy-hero > * {
+	position: relative;
+	z-index: 1;
+}
 .na-strategy-title {
 	margin: 0;
 	font-family: 'Space Grotesk', sans-serif;
-	font-size: clamp(2rem, 5vw, 3rem);
-	line-height: 1.1;
-	letter-spacing: -0.02em;
-	color: var(--na-color-text, #E8ECF4);
+	font-weight: 700;
+	font-size: clamp(2.1rem, 5vw, 3.25rem);
+	line-height: 1.05;
+	letter-spacing: -0.03em;
+	color: var(--na-color-text, #e8ecf4);
 }
-
 .na-strategy-lead {
 	margin: 0;
-	max-width: 60ch;
-	color: var(--na-color-text-secondary, #9AA7C2);
+	max-width: 64ch;
+	color: var(--na-color-text-secondary, #9aa7c2);
 }
-
 .na-strategy-chips {
 	list-style: none;
-	margin: 0.5rem 0 0;
+	margin: 0.4rem 0 0;
 	padding: 0;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.75rem;
+	gap: 0.6rem;
 }
-
 .na-strategy-chip {
 	display: flex;
 	flex-direction: column;
-	gap: 0.15rem;
-	padding: 0.5rem 0.85rem;
-	background: var(--na-color-surface-alt, #1A2236);
-	border: 1px solid var(--na-color-border, #2A3550);
-	border-radius: var(--na-radius-md, 10px);
+	gap: 0.2rem;
+	padding: 0.5rem 0.9rem;
+	background: var(--na-color-surface-alt, #1a2236);
+	border: 1px solid var(--na-color-border, #2a3550);
+	border-radius: 10px;
+}
+.na-strategy-chip-label {
+	color: var(--na-color-text-muted, #6b7896);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 0.68rem;
+}
+.na-strategy-chip-value {
+	color: var(--na-color-text, #e8ecf4);
+	font-weight: 600;
+	font-size: 0.95rem;
+}
+.na-strategy-hero-cta {
+	margin-top: 0.6rem;
 }
 
-.na-strategy-chip-label {
-	color: var(--na-color-text-muted, #6B7896);
+/* ===================================================================
+   5. Sections + flagship KPI grid
+   =================================================================== */
+.na-strategy-section-title {
+	margin: 0 0 0.85rem;
+}
+.na-strategy-section-intro {
+	margin: -0.35rem 0 1.35rem;
+	color: var(--na-color-text-muted, #6b7896);
+	font-family: var(--na-mono, 'JetBrains Mono', ui-monospace, monospace);
+	font-size: 0.82rem;
+	letter-spacing: 0.04em;
+}
+.na-strategy-kpi-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+	gap: 0.9rem;
+}
+.na-strategy-single .na-metric.na-strategy-kpi {
+	background: var(--na-color-surface, #121829);
+	border: 1px solid var(--na-color-border, #2a3550);
+	border-radius: 14px;
+	padding: 1.05rem 1.1rem;
+	position: relative;
+	overflow: hidden;
+	transition: border-color 0.2s ease, transform 0.18s ease, box-shadow 0.25s ease;
+}
+.na-strategy-single .na-metric.na-strategy-kpi:hover {
+	border-color: var(--na-color-accent, #3d7dff);
+	transform: translateY(-2px);
+	box-shadow: 0 16px 36px -22px rgba(61, 125, 255, 0.55);
+}
+.na-strategy-single .na-strategy-kpi .na-metric__value {
+	font-family: var(--na-mono, 'JetBrains Mono', ui-monospace, monospace);
+	font-variant-numeric: tabular-nums;
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+.na-strategy-single .na-strategy-kpi .na-metric__label {
+	color: var(--na-color-text-muted, #6b7896);
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	font-size: 0.7rem;
 }
 
-.na-strategy-chip-value {
-	color: var(--na-color-text, #E8ECF4);
-	font-weight: 600;
-}
-
-.na-strategy-hero-cta {
-	margin-top: 0.5rem;
-}
-
-/* Sections */
-.na-strategy-section-title {
-	margin: 0 0 1rem;
-}
-
-.na-strategy-section-intro {
-	margin: -0.5rem 0 1.25rem;
-	color: var(--na-color-text-secondary, #9AA7C2);
-	font-variant-numeric: tabular-nums;
-}
-
-/* KPI grid */
-.na-strategy-kpi-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-	gap: 1rem;
-}
-
-/* Equity chart */
+/* ===================================================================
+   6. Equity chart panel (ApexCharts rendered on dark)
+   =================================================================== */
 .na-strategy-equity-chart {
-	min-height: 360px;
-	padding: 1rem;
-	border-radius: var(--na-radius-lg, 16px);
+	min-height: 380px;
+	padding: 1.25rem 1.25rem 0.75rem;
+}
+.na-strategy-equity-chart .apexcharts-text tspan,
+.na-strategy-equity-chart .apexcharts-xaxis-label,
+.na-strategy-equity-chart .apexcharts-yaxis-label {
+	fill: var(--na-color-text-secondary, #9aa7c2) !important;
+}
+.na-strategy-equity-chart .apexcharts-gridline {
+	stroke: rgba(42, 53, 80, 0.45) !important;
+}
+.na-strategy-equity-chart .apexcharts-tooltip {
+	background: var(--na-color-elevated, #232c44) !important;
+	border: 1px solid var(--na-color-accent, #3d7dff) !important;
+	color: #fff !important;
 }
 
-/* Methodology prose */
+/* ===================================================================
+   7. Methodology prose
+   =================================================================== */
 .na-strategy-prose {
-	color: var(--na-color-text-secondary, #9AA7C2);
-	line-height: 1.7;
+	color: var(--na-color-text-secondary, #9aa7c2);
+	line-height: 1.75;
+	font-size: 1.0625rem;
 }
-
 .na-strategy-prose > * + * {
 	margin-top: 1rem;
 }
+.na-strategy-prose h2,
+.na-strategy-prose h3,
+.na-strategy-prose h4 {
+	color: var(--na-color-text, #e8ecf4);
+	font-family: 'Space Grotesk', sans-serif;
+	margin-top: 1.6rem;
+}
+.na-strategy-prose a {
+	color: var(--na-color-accent-2, #38bdf8);
+}
+.na-strategy-prose strong {
+	color: var(--na-color-text, #e8ecf4);
+}
+.na-strategy-prose code {
+	font-family: var(--na-mono, 'JetBrains Mono', ui-monospace, monospace);
+	background: var(--na-color-surface-alt, #1a2236);
+	border: 1px solid var(--na-color-border, #2a3550);
+	border-radius: 6px;
+	padding: 0.1em 0.4em;
+	font-size: 0.9em;
+}
 
-/* Risk */
+/* ===================================================================
+   8. Risk profile
+   =================================================================== */
 .na-strategy-risk-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 	gap: 1rem;
 }
-
-.na-strategy-risk-item {
+.na-strategy-single .na-strategy-risk-item.na-card {
 	display: flex;
 	flex-direction: column;
-	gap: 0.35rem;
-	padding: 1rem 1.25rem;
+	gap: 0.45rem;
+	padding: 1.15rem 1.3rem;
+	background: var(--na-color-surface, #121829);
+	border: 1px solid var(--na-color-border, #2a3550);
+	border-radius: 14px;
 }
-
 .na-strategy-risk-key {
-	color: var(--na-color-text-muted, #6B7896);
+	color: var(--na-color-text-muted, #6b7896);
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 }
-
 .na-strategy-risk-val {
-	font-size: 1.5rem;
+	font-size: 1.6rem;
 	font-weight: 700;
 	font-variant-numeric: tabular-nums;
+	color: var(--na-color-text, #e8ecf4);
 }
 
-/* Related */
+/* ===================================================================
+   9. Related strategies
+   =================================================================== */
 .na-strategy-related-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 	gap: 1.25rem;
 }
 
-/* CTA */
+/* ===================================================================
+   10. CTA
+   =================================================================== */
 .na-strategy-cta {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	padding: clamp(1.5rem, 4vw, 2.5rem);
-	border-radius: var(--na-radius-lg, 16px);
-	text-align: center;
+	gap: 0.9rem;
 	align-items: center;
+	text-align: center;
+	padding: clamp(2rem, 5vw, 3rem);
+	overflow: hidden;
 }
-
+.na-strategy-cta::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background: radial-gradient(closest-side, rgba(61, 125, 255, 0.14), transparent 70%);
+}
+.na-strategy-cta > * {
+	position: relative;
+	z-index: 1;
+}
 .na-strategy-cta-actions {
 	display: flex;
 	flex-wrap: wrap;
@@ -162,10 +403,9 @@
 	justify-content: center;
 }
 
-/* Sign helpers (scoped) */
-.na-strategy-single .na-neg { color: var(--na-color-negative, #EF4444); }
-.na-strategy-single .na-pos { color: var(--na-color-positive, #22C55E); }
-
+/* ===================================================================
+   11. Responsive
+   =================================================================== */
 @media (max-width: 640px) {
 	.na-strategy-kpi-grid {
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
