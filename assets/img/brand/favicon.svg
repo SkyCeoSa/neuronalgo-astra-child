@@ -1,11 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" fill="none" role="img" aria-label="NeuronAlgo">
   <defs>
-    <linearGradient id="naFav" x1="4" y1="28" x2="28" y2="4" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#3D7DFF"/>
-      <stop offset="1" stop-color="#38BDF8"/>
+    <linearGradient id="naFav" gradientUnits="userSpaceOnUse" x1="14" y1="126" x2="126" y2="14">
+      <stop offset="0" stop-color="#3d7dff"/>
+      <stop offset="0.55" stop-color="#4f9bff"/>
+      <stop offset="1" stop-color="#38bdf8"/>
     </linearGradient>
+    <mask id="naFavCut">
+      <rect x="4" y="4" width="132" height="132" rx="34" fill="#fff"/>
+      <path d="M42 96 L42 58 L88 96 L88 52" stroke="#000" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <polygon points="88,26 72,52 104,52" fill="#000"/>
+    </mask>
   </defs>
-  <rect x="0" y="0" width="32" height="32" rx="7" fill="#0A0E1A"/>
-  <path d="M6 23 L13 16 L19 19 L26 9" stroke="url(#naFav)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="26" cy="9" r="3.2" fill="url(#naFav)"/>
+  <rect x="4" y="4" width="132" height="132" rx="34" fill="url(#naFav)" mask="url(#naFavCut)"/>
 </svg>
