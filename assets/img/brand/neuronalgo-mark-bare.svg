@@ -6,6 +6,6 @@
       <stop offset="1" stop-color="#38bdf8"/>
     </linearGradient>
   </defs>
-  <path d="M44 92 L44 60 L86 92 L86 52" stroke="url(#naGradientBare)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <polygon points="86,28 72,52 100,52" fill="url(#naGradientBare)"/>
+  <path d="M44 92 L44 60 L86 92 L86 44" stroke="url(#naGradientBare)" stroke-width="14" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+  <polygon points="86,27 74,46 98,46" fill="url(#naGradientBare)"/>
 </svg>
