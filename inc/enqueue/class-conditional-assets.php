@@ -121,3 +121,41 @@ function na_enqueue_single_strategy_assets() {
     wp_enqueue_style( 'na-backtest-charts' );
 }
 add_action( 'wp_enqueue_scripts', 'na_enqueue_single_strategy_assets', 20 );
+
+/**
+ * Enqueue the bespoke landing ("The Desk") assets (FE-2.1).
+ *
+ * Loaded only when the current page uses the page-landing.php template.
+ * landing.css depends on the global design tokens + components handles.
+ * landing.js is vanilla ES6 (no deps) and loads in the footer.
+ * Versioned by filemtime for cache-busting during active development.
+ */
+function na_enqueue_landing_assets() {
+    if ( ! is_page_template( 'page-landing.php' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $uri  = get_stylesheet_directory_uri();
+
+    $css_rel = '/assets/css/sections/landing.css';
+    $css_ver = file_exists( $base . $css_rel ) ? filemtime( $base . $css_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_style(
+        'na-landing',
+        $uri . $css_rel,
+        array( 'na-design-tokens', 'na-components' ),
+        $css_ver,
+        'all'
+    );
+
+    $js_rel = '/assets/js/landing.js';
+    $js_ver = file_exists( $base . $js_rel ) ? filemtime( $base . $js_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_script(
+        'na-landing',
+        $uri . $js_rel,
+        array(),
+        $js_ver,
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_landing_assets', 20 );

@@ -427,3 +427,29 @@ th.na-ta-r { text-align: right; }
 	.na-flash-up, .na-flash-down { animation: none; }
 	.na-desk::before { transition: none; }
 }
+
+/* ==========================================================================
+ * FE-2.2 — Force the Desk dark canvas over Astra's default body styles.
+ * page-landing.php renders its own <html>/<body> (no get_header), yet Astra's
+ * global + dynamic CSS still set a light body background/color via wp_head().
+ * Scope to the landing body class and use !important so the Desk theme wins
+ * regardless of stylesheet print order.
+ * ========================================================================== */
+html { background: #0a0e1a; }
+body.na-landing-page {
+	background: #0a0e1a !important;
+	color: #e8ecf4 !important;
+}
+
+/* ==========================================================================
+ * FE-2.3 — Heading colors. Astra\'s global/dynamic CSS sets a dark heading
+ * color on h1-h4 that beats the inherited body color, leaving the landing
+ * titles gray on the dark canvas. Force them light. The gradient accent span
+ * keeps its own -webkit-text-fill-color, so it is unaffected.
+ * ========================================================================== */
+body.na-landing-page h1,
+body.na-landing-page h2,
+body.na-landing-page h3,
+body.na-landing-page h4 {
+	color: #f5f7fb !important;
+}
