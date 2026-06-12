@@ -1,0 +1,21 @@
+# Normalize line endings: store LF in the repo, check out native per OS.
+* text=auto
+
+# Binary assets (never normalize)
+*.woff2 binary
+*.woff  binary
+*.ttf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+
+# Keep these as LF text
+*.php   text eol=lf
+*.js    text eol=lf
+*.css   text eol=lf
+*.html  text eol=lf
+*.svg   text eol=lf
+*.json  text eol=lf
