@@ -107,3 +107,25 @@
   .na-backtest-single.na-motion .win{opacity:1;transform:none;transition:none;}
   .na-backtest-single.na-motion .cmp .bar i{transition:none;}
 }
+
+/* =====================================================================
+   FE-3.8 — uniform hover micro-interaction
+   The gauge tiles (.glet) and stat metrics (.metric) lift + get a blue
+   border on hover. These cards were static, so give them the SAME feel:
+     .netlet            -> at-a-glance net_profit banner
+     .tlet              -> win_loss_split / win_vs_loss_size / key_ratios
+                           / streaks (trade_breakdown)
+     .tlet.na-td-tile   -> direction_split / direction_performance
+   Matches .glet:hover / .metric:hover exactly (transform + border-color)
+   for a uniform, alive-on-hover behavior across every card.
+   ===================================================================== */
+.na-backtest-single .netlet,
+.na-backtest-single .tlet{
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.na-backtest-single .netlet:hover,
+.na-backtest-single .tlet:hover{
+  border-color:var(--bt-accent,#3d7dff);
+  transform:translateY(-2px);
+  box-shadow:0 16px 36px -24px rgba(61,125,255,.7);
+}
