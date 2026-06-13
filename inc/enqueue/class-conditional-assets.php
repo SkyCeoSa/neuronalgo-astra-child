@@ -127,11 +127,13 @@ add_action( 'wp_enqueue_scripts', 'na_enqueue_single_strategy_assets', 20 );
  *
  * Loaded only on is_singular( 'backtest' ). The section stylesheet is
  * self-contained (its own scoped tokens under .na-backtest-single plus the
- * body.single-backtest shell neutralizer) so it has no style dependencies. The
- * chart bundle (na-apexcharts + na-backtest-charts), registered at priority 10
- * above, is enqueued so the equity and drawdown charts auto-render via the
- * na-backtest-charts loader. Section CSS is versioned by filemtime for
- * cache-busting during active development.
+ * body.single-backtest shell neutralizer) so it has no style dependencies. A
+ * tiny overrides stylesheet (na-single-backtest-overrides) is layered on top
+ * for surgical post-launch fixes. The chart bundle (na-apexcharts +
+ * na-backtest-charts), registered at priority 10 above, is enqueued so the
+ * equity and drawdown charts auto-render via the na-backtest-charts loader.
+ * Section CSS is versioned by filemtime for cache-busting during active
+ * development.
  */
 function na_enqueue_single_backtest_assets() {
     if ( ! is_singular( 'backtest' ) ) {
@@ -147,6 +149,17 @@ function na_enqueue_single_backtest_assets() {
         get_stylesheet_directory_uri() . $rel,
         array(),
         $ver,
+        'all'
+    );
+
+    // Surgical overrides / patches layered on top of na-single-backtest.
+    $ov_rel = '/assets/css/sections/single-backtest-overrides.css';
+    $ov_ver = file_exists( $base . $ov_rel ) ? filemtime( $base . $ov_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_style(
+        'na-single-backtest-overrides',
+        get_stylesheet_directory_uri() . $ov_rel,
+        array( 'na-single-backtest' ),
+        $ov_ver,
         'all'
     );
 

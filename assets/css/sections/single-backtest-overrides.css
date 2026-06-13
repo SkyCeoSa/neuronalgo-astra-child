@@ -1,0 +1,20 @@
+/* ============================================================
+   NeuronAlgo — Single Backtest overrides / patches (FE-3.3)
+   Small, surgical fixes layered on top of single-backtest.css.
+   Enqueued on is_singular( 'backtest' ) with na-single-backtest
+   declared as a style dependency so these rules always win the
+   cascade. Keep this file tiny and well-commented.
+   ============================================================ */
+
+/* FIX (equity & drawdown dead-space): the chart loader (backtest-charts.js)
+   renders ApexCharts directly into the #na-chart-bt<ID>-equity / -drawdown
+   container, then only EMPTIES the inner .na-chart-content-area on the
+   RENDERED state (innerHTML = ''). Because that element keeps its
+   min-height:300px, an empty 300px block stayed ABOVE the rendered chart,
+   pushing the card taller and leaving dead space at the top on load.
+   Collapse it once the chart is rendered so the card hugs the chart.
+   The loading / empty / error states intentionally keep their min-height
+   so the skeleton and fallback messages still reserve space. */
+.na-backtest-single .na-chart-state-rendered .na-chart-content-area{
+  display:none;
+}
