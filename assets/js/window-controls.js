@@ -84,6 +84,9 @@
     setTimeout(function(){window.dispatchEvent(new Event('resize'));},80);
   }
 
+  function onEsc(e){if(e.key==='Escape'){restore();}}
+  document.addEventListener('keydown',onEsc);
+
   function setupDot(dot,label,onAct){
     dot.classList.add('na-ctl');
     dot.setAttribute('role','button');
@@ -158,3 +161,49 @@
   function addResetBtn(container){
     if(container.querySelector('.na-zoom-reset')){return;}
     var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='na-zoom-reset';
+    btn.title='Reset scale';
+    btn.setAttribute('aria-label','Reset chart scale');
+    btn.innerHTML='<span class="na-zr-ic">\u27F2</span>';
+    btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();resetZoom(container);});
+    container.appendChild(btn);
+  }
+
+  function observeChart(container){
+    if(container.__naChartObserved){return;}
+    container.__naChartObserved=true;
+    if(container.classList.contains('na-chart-state-rendered')){addResetBtn(container);}
+    var mo=new MutationObserver(function(){
+      if(container.classList.contains('na-chart-state-rendered')){addResetBtn(container);}
+    });
+    mo.observe(container,{attributes:true,attributeFilter:['class']});
+  }
+
+  // --- wire a freshly added subtree (cards + chart containers) ---
+  function scanRoot(root){
+    if(!root||root.nodeType!==1){return;}
+    if(root.matches&&root.matches('.win')){wireControls(root);}
+    if(root.querySelectorAll){
+      var wins=root.querySelectorAll('.win');
+      for(var i=0;i<wins.length;i++){wireControls(wins[i]);}
+    }
+    if(root.matches&&root.matches(CHART_SEL)){observeChart(root);}
+    if(root.querySelectorAll){
+      var ch=root.querySelectorAll(CHART_SEL);
+      for(var j=0;j<ch.length;j++){observeChart(ch[j]);}
+    }
+  }
+
+  ready(function(){
+    patchApex();
+    scanRoot(document.body);
+    var bodyObserver=new MutationObserver(function(muts){
+      for(var m=0;m<muts.length;m++){
+        var added=muts[m].addedNodes;
+        for(var n=0;n<added.length;n++){scanRoot(added[n]);}
+      }
+    });
+    bodyObserver.observe(document.body,{childList:true,subtree:true});
+  });
+})();
