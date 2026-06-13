@@ -18,3 +18,23 @@
 .na-backtest-single .na-chart-state-rendered .na-chart-content-area{
   display:none;
 }
+
+/* ============================================================
+   FE-3.9 — Terminal cursor restyle -> "Soft Pulse Glow" (variant #3).
+   The signature blinking .caret used across the backtest single page
+   switches from a hard steps(1) on/off blink to a smooth, glowing
+   pulse that never fully disappears. Overrides both the .caret rule
+   and the naBtBlink keyframes from single-backtest.css (this file is
+   enqueued after na-single-backtest, so it wins the cascade).
+   ============================================================ */
+.na-backtest-single .caret{
+  border-radius:1px;
+  animation:naBtBlink 1.5s ease-in-out infinite;
+}
+@keyframes naBtBlink{
+  0%,100%{ opacity:1; box-shadow:0 0 12px 1px var(--bt-cyan); }
+  50%{ opacity:.35; box-shadow:0 0 3px 0 var(--bt-cyan); }
+}
+@media (prefers-reduced-motion: reduce){
+  .na-backtest-single .caret{ animation:none; box-shadow:0 0 8px 0 var(--bt-cyan); }
+}

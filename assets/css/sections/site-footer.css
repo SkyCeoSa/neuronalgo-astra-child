@@ -14,17 +14,17 @@
 	--ft-pos: #22c55e;
 	--ft-heading: #f5f7fb;
 	--ft-grad: linear-gradient(135deg, #3d7dff, #38bdf8);
-	--ft-display: \'Space Grotesk\', var(--na-font-heading, system-ui, sans-serif);
-	--ft-mono: var(--na-font-mono, \'JetBrains Mono\', ui-monospace, monospace);
+	--ft-display: 'Space Grotesk', var(--na-font-heading, system-ui, sans-serif);
+	--ft-mono: var(--na-font-mono, 'JetBrains Mono', ui-monospace, monospace);
 	position: relative;
 	background: var(--ft-bg);
 	color: var(--ft-text);
-	font-family: var(--na-font-body, \'Inter\', system-ui, sans-serif);
+	font-family: var(--na-font-body, 'Inter', system-ui, sans-serif);
 	line-height: 1.5;
 }
 .na-site-footer *{ box-sizing: border-box; }
 .na-site-footer::before{
-	content: \'\';
+	content: '';
 	position: absolute;
 	top: 0; left: 0; right: 0;
 	height: 2px;
@@ -49,9 +49,13 @@
 	background: var(--ft-accent);
 	display: inline-block;
 	margin-left: -4px;
-	animation: na-ft-blink 1.1s steps(1) infinite;
+	border-radius: 1px;
+	animation: na-ft-blink 1.5s ease-in-out infinite;
 }
-@keyframes na-ft-blink{ 50%{ opacity: 0; } }
+@keyframes na-ft-blink{
+	0%, 100%{ opacity: 1; box-shadow: 0 0 12px 1px var(--ft-accent); }
+	50%{ opacity: .35; box-shadow: 0 0 3px 0 var(--ft-accent); }
+}
 .na-ft-spacer{ flex: 1; }
 .na-ft-status{
 	display: inline-flex;
@@ -154,7 +158,7 @@
 	transition: color .15s, transform .15s;
 }
 .na-ft-links a::before{
-	content: \'\21b3\';
+	content: '\21b3';
 	color: var(--ft-accent);
 	opacity: .55;
 	transition: transform .15s, opacity .15s;
