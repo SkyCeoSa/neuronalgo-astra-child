@@ -1,8 +1,8 @@
 /* =====================================================================
-   NeuronAlgo — Single Backtest enhancements (FE-3.6)
+   NeuronAlgo — Single Backtest enhancements (FE-3.6 + FE-3.7)
    Terminal-desk hero: badges + animated KPI strip + faint equity sparkline.
+   Uniform motion: scroll-reveal cards + animated gauge/donut/bar fills.
    Scoped under .na-backtest-single; tokens fall back to safe defaults.
-   Card-split needs no extra CSS — the injected card reuses .win styling.
    ===================================================================== */
 
 /* hero becomes a positioning context with the sparkline layered behind text */
@@ -85,3 +85,25 @@
 
 /* ---------- secondary CTA ---------- */
 .na-backtest-single .hero .hero-cta .na-cta2{margin-left:10px;}
+
+/* =====================================================================
+   FE-3.7 — uniform motion
+   .na-motion is added by JS only, so if the script is absent everything
+   stays fully visible (no hidden cards).
+   ===================================================================== */
+.na-backtest-single.na-motion .win{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .55s ease,transform .55s cubic-bezier(.22,1,.36,1);
+  will-change:opacity,transform;
+}
+.na-backtest-single.na-motion .win.na-reveal-in{
+  opacity:1;transform:none;
+}
+/* smooth fill for comparison / performance bars when revealed */
+.na-backtest-single.na-motion .cmp .bar i{
+  transition:width .9s cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-reduced-motion: reduce){
+  .na-backtest-single.na-motion .win{opacity:1;transform:none;transition:none;}
+  .na-backtest-single.na-motion .cmp .bar i{transition:none;}
+}

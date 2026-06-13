@@ -1,19 +1,19 @@
 /**
- * NeuronAlgo — Single Backtest enhancements (FE-3.6), additive & non-destructive.
- * 1) Splits the shared equity_curve card into two .win cards (Equity + Drawdown)
- *    for a cleaner layout and independent zoom.
- * 2) Ports the approved terminal-desk hero: badge row, animated KPI strip
- *    (count-up), faint equity sparkline, secondary CTA. Values come from
- *    window.NA_HERO (server-injected); window.NA_TD supplies the long/short
- *    split; the sparkline reads the on-page equity data <script> JSON.
- * Every step is wrapped in try/catch and only mutates after new nodes are built,
- * so any failure leaves the server-rendered markup intact. Window controls and
- * zoom-reset attach automatically (window-controls.js observes new cards).
+ * NeuronAlgo — Single Backtest enhancements (FE-3.6 + FE-3.7), additive & non-destructive.
+ * 1) Splits the shared equity_curve card into two .win cards (Equity + Drawdown).
+ * 2) Ports the terminal-desk hero (badges, animated KPI strip, equity sparkline).
+ * 3) Uniform motion system: every .win card scroll-reveals (fade-up) and, on first
+ *    reveal, its numbers count-up and its gauges/donuts/bars fill from zero — so
+ *    at-a-glance, trade_breakdown, trade_distribution and full_statistics all feel
+ *    as alive as the hero. Honors prefers-reduced-motion. Every step is wrapped in
+ *    try/catch and restores exact original text/markup at rest, so any failure
+ *    leaves server-rendered content intact.
  */
 (function(){
   'use strict';
 
   function ready(fn){if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn);}else{fn();}}
+  function each(list,fn){if(list){Array.prototype.forEach.call(list,fn);}}
   function num(n){return (typeof n==='number'&&isFinite(n))?n:null;}
   function fmtNum(v,dec){return v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
 
@@ -176,8 +176,94 @@
     }catch(e){}
   }
 
+  /* ---------- 3) uniform motion: reveal + count-up + fills ---------- */
+  var VALUE_SEL='.nval, .nrow .v, .gv, .dc b, .legend .row .v, .cmp .num, .mini .v, .metric .v';
+
+  function countUpText(el){
+    try{
+      if(el.__naCounted||el.children.length!==0){return;}
+      var orig=(el.textContent||'').trim();
+      var m=orig.match(/^([+-]?\$?)(\d[\d,]*(?:\.\d+)?)(%|x|\u00D7)?$/);
+      if(!m){return;}
+      el.__naCounted=1;
+      var pre=m[1],rawNum=m[2],suf=m[3]||'';
+      var grouped=rawNum.indexOf(',')>=0;
+      var dot=rawNum.indexOf('.');
+      var dec=dot>=0?(rawNum.length-dot-1):0;
+      var target=parseFloat(rawNum.replace(/,/g,''));
+      if(!isFinite(target)){return;}
+      function fmt(v){var s=grouped?v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):v.toFixed(dec);return pre+s+suf;}
+      var t0=null,dur=900;
+      function tick(ts){if(!t0){t0=ts;}var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,3);el.textContent=fmt(target*e);if(p<1){requestAnimationFrame(tick);}else{el.textContent=orig;}}
+      el.textContent=fmt(0);
+      requestAnimationFrame(tick);
+    }catch(e){}
+  }
+
+  function animateBar(el){
+    try{
+      var w=el.style.width;
+      if(!w||w==='0%'||w==='0px'){return;}
+      el.style.width='0%';
+      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.width=w;});});
+    }catch(e){}
+  }
+
+  function animateConic(el){
+    try{
+      var s=el.getAttribute('style')||'';
+      var m=s.match(/([\d.]+)deg/);
+      if(!m){return;}
+      var target=parseFloat(m[1]);
+      if(!(target>0)){return;}
+      var idx=m.index,pre=s.slice(0,idx),post=s.slice(idx+m[0].length);
+      var t0=null,dur=900;
+      function tick(ts){if(!t0){t0=ts;}var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,3);el.setAttribute('style',pre+(target*e).toFixed(1)+'deg'+post);if(p<1){requestAnimationFrame(tick);}else{el.setAttribute('style',s);}}
+      el.setAttribute('style',pre+'0deg'+post);
+      requestAnimationFrame(tick);
+    }catch(e){}
+  }
+
+  function revealCard(card){
+    try{
+      if(card.__naRevealed){return;}
+      card.__naRevealed=1;
+      card.classList.add('na-reveal-in');
+      each(card.querySelectorAll(VALUE_SEL),countUpText);
+      each(card.querySelectorAll('.cmp .bar i'),animateBar);
+      each(card.querySelectorAll('.gauge, .donut'),animateConic);
+    }catch(e){}
+  }
+
+  function setupMotion(){
+    try{
+      var root=document.getElementById('na-backtest-single');
+      if(!root){return;}
+      var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce){return;}
+      if(!('IntersectionObserver' in window)){return;}
+      root.classList.add('na-motion');
+      var io=new IntersectionObserver(function(entries){
+        each(entries,function(en){if(en.isIntersecting){revealCard(en.target);io.unobserve(en.target);}});
+      },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+      function observe(card){if(card.__naMo){return;}card.__naMo=1;io.observe(card);}
+      each(root.querySelectorAll('.win'),observe);
+      var mo=new MutationObserver(function(muts){
+        each(muts,function(mu){
+          each(mu.addedNodes,function(node){
+            if(!node||node.nodeType!==1){return;}
+            if(node.classList&&node.classList.contains('win')){observe(node);}
+            if(node.querySelectorAll){each(node.querySelectorAll('.win'),observe);}
+          });
+        });
+      });
+      mo.observe(root,{childList:true,subtree:true});
+    }catch(e){}
+  }
+
   ready(function(){
     splitCharts();
     buildHero();
+    setupMotion();
   });
 })();
