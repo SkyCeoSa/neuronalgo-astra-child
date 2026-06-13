@@ -4,16 +4,16 @@
  *   Red is intentionally inert (no close on content pages).
  * - Equity/drawdown ApexCharts get a "reset scale" button. The chart loader
  *   (backtest-charts.js, untouchable) builds each chart WITHOUT a chart.id and
- *   never stores the instance, so the instance is otherwise unreachable. We
- *   wrap ApexCharts.prototype.render once at load time so every chart records
- *   itself on its mount element (el.__naChart). This script evaluates in the
- *   footer before DOMContentLoaded, i.e. before the loader renders, so the
- *   patch is always in place. Reset then zoomX-es back to the full data range.
+ *   never stores the instance, so we wrap ApexCharts.prototype.render once at
+ *   load time to record each instance on its mount element (el.__naChart).
+ * - A MutationObserver wires any .win card / chart container injected later
+ *   (split cards, hero, trade-distribution, ...) so controls stay uniform.
  */
 (function(){
   'use strict';
 
   var SCOPES=['na-backtest-single','na-single-strategy','na-backtest-archive','na-strategy-library'];
+  var CHART_SEL='[id^="na-chart-"][id$="-equity"],[id^="na-chart-"][id$="-drawdown"]';
 
   function ready(fn){
     if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn);}else{fn();}
@@ -95,8 +95,10 @@
   }
 
   function wireControls(win){
+    if(win.__naWired){return;}
     var dots=win.querySelectorAll('.winbar .dots i');
     if(dots.length<3){return;}
+    win.__naWired=true;
     setupDot(dots[1],'Minimize',function(){win.classList.toggle('na-min');});
     setupDot(dots[2],'Expand',function(){maximize(win);});
   }
@@ -156,29 +158,3 @@
   function addResetBtn(container){
     if(container.querySelector('.na-zoom-reset')){return;}
     var btn=document.createElement('button');
-    btn.type='button';
-    btn.className='na-zoom-reset';
-    btn.setAttribute('title','Reset zoom');
-    btn.setAttribute('aria-label','Reset chart zoom');
-    btn.innerHTML='<span class="na-zr-ic">\u27F2</span> reset';
-    btn.addEventListener('click',function(e){e.stopPropagation();resetZoom(container);});
-    container.appendChild(btn);
-  }
-
-  function observeChart(container){
-    function tryAdd(){if(container.classList.contains('na-chart-state-rendered')){addResetBtn(container);}}
-    tryAdd();
-    try{
-      var mo=new MutationObserver(tryAdd);
-      mo.observe(container,{attributes:true,attributeFilter:['class']});
-    }catch(e){}
-  }
-
-  ready(function(){
-    var wins=document.querySelectorAll('.win'),i;
-    for(i=0;i<wins.length;i++){wireControls(wins[i]);}
-    var charts=document.querySelectorAll('[id^="na-chart-"][id$="-equity"],[id^="na-chart-"][id$="-drawdown"]');
-    for(i=0;i<charts.length;i++){observeChart(charts[i]);}
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'){restore();}});
-  });
-})();
