@@ -3,9 +3,11 @@
  * - .win cards get macOS-style minimize (yellow) + expand (green).
  *   Red is intentionally inert (no close on content pages).
  * - Equity/drawdown ApexCharts get a "reset scale" button. The charts are
- *   drag-zoomable but ship with the toolbar hidden, so there is otherwise no
- *   way back from a zoom. Reads the live instance via element.apexcharts and
- *   does NOT touch backtest-charts.js.
+ *   drag/wheel-zoomable but ship with the toolbar hidden, so there is
+ *   otherwise no way back from a zoom. The live instance is resolved WITHOUT
+ *   touching backtest-charts.js: the loader never sets element.apexcharts, so
+ *   we find it via the ApexCharts canvas id (ApexCharts.getChartByID) and fall
+ *   back to the Apex._chartInstances registry, then zoomX to the full range.
  */
 (function(){
   'use strict';
@@ -78,17 +80,55 @@
     setupDot(dots[2],'Expand',function(){maximize(win);});
   }
 
-  function resetZoom(container){
-    var inst=container.apexcharts;
-    if(!inst){return;}
+  // --- resolve the live ApexCharts instance for a chart container ---
+  function findInstance(container){
+    if(container.apexcharts){return container.apexcharts;}
     try{
-      var g=inst.w&&inst.w.globals;
-      if(g&&g.initialMinX!=null&&g.initialMaxX!=null&&isFinite(g.initialMinX)&&isFinite(g.initialMaxX)){
-        inst.zoomX(g.initialMinX,g.initialMaxX);
-      }else if(typeof inst.resetSeries==='function'){
-        inst.resetSeries(true,true);
+      var canvas=container.querySelector('.apexcharts-canvas');
+      if(canvas&&canvas.id&&window.ApexCharts&&typeof ApexCharts.getChartByID==='function'){
+        var byId=ApexCharts.getChartByID(canvas.id.replace(/^apexcharts/,''));
+        if(byId){return byId;}
       }
-    }catch(err){}
+    }catch(e){}
+    try{
+      var reg=window.Apex&&window.Apex._chartInstances;
+      if(reg&&reg.length){
+        for(var i=0;i<reg.length;i++){
+          var c=reg[i]&&reg[i].chart;
+          if(c&&c.el&&(c.el===container||container.contains(c.el))){return c;}
+        }
+      }
+    }catch(e){}
+    return null;
+  }
+
+  function fullXRange(inst){
+    try{
+      var s=inst.w&&inst.w.config&&inst.w.config.series;
+      if(!s){return null;}
+      var min=Infinity,max=-Infinity,i,j,d,x;
+      for(i=0;i<s.length;i++){
+        d=s[i].data||[];
+        for(j=0;j<d.length;j++){
+          x=Array.isArray(d[j])?d[j][0]:(d[j]&&d[j].x);
+          if(typeof x==='number'&&isFinite(x)){if(x<min){min=x;}if(x>max){max=x;}}
+        }
+      }
+      if(isFinite(min)&&isFinite(max)&&max>min){return [min,max];}
+    }catch(e){}
+    return null;
+  }
+
+  function resetZoom(container){
+    var inst=findInstance(container);
+    if(!inst){return;}
+    var r=fullXRange(inst);
+    try{
+      if(r&&typeof inst.zoomX==='function'){inst.zoomX(r[0],r[1]);return;}
+    }catch(e){}
+    try{
+      if(typeof inst.resetSeries==='function'){inst.resetSeries(true,true);}
+    }catch(e){}
   }
 
   function addResetBtn(container){
