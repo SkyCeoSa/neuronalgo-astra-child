@@ -1,0 +1,87 @@
+/* =====================================================================
+   NeuronAlgo — Single Backtest enhancements (FE-3.6)
+   Terminal-desk hero: badges + animated KPI strip + faint equity sparkline.
+   Scoped under .na-backtest-single; tokens fall back to safe defaults.
+   Card-split needs no extra CSS — the injected card reuses .win styling.
+   ===================================================================== */
+
+/* hero becomes a positioning context with the sparkline layered behind text */
+.na-backtest-single .hero.na-hero-on .winbody{position:relative;overflow:hidden;}
+.na-backtest-single .hero.na-hero-on .winbody > *:not(.na-hero-spark){position:relative;z-index:1;}
+
+.na-hero-spark{
+  position:absolute;left:0;right:0;bottom:0;
+  width:100%;height:56%;
+  opacity:.2;pointer-events:none;z-index:0;
+}
+
+/* ---------- badges ---------- */
+.na-hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin:.7rem 0 1.2rem;}
+.na-badge{
+  font-family:var(--bt-mono,ui-monospace,monospace);
+  font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;white-space:nowrap;
+  border:1px solid var(--bt-border,#233048);
+  color:var(--bt-muted,#9aa7c2);
+  background:rgba(255,255,255,.025);
+}
+.na-badge.live{
+  position:relative;padding-left:21px;font-weight:800;
+  color:#04130b;border-color:transparent;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+}
+.na-badge.live::before{
+  content:"";position:absolute;left:9px;top:50%;transform:translateY(-50%);
+  width:6px;height:6px;border-radius:50%;background:#04130b;
+  box-shadow:0 0 0 0 rgba(4,19,11,.55);
+  animation:naLivePulse 1.8s infinite;
+}
+@keyframes naLivePulse{
+  0%{box-shadow:0 0 0 0 rgba(4,19,11,.55);}
+  70%{box-shadow:0 0 0 6px rgba(4,19,11,0);}
+  100%{box-shadow:0 0 0 0 rgba(4,19,11,0);}
+}
+.na-badge.lo{
+  color:var(--bt-cyan,#38bdf8);
+  border-color:rgba(56,189,248,.4);
+  background:rgba(56,189,248,.08);
+}
+
+/* ---------- KPI strip ---------- */
+.na-kpi-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 1.3rem;
+}
+@media(max-width:720px){.na-kpi-strip{grid-template-columns:repeat(2,1fr);}}
+.na-kpi{
+  position:relative;overflow:hidden;
+  padding:14px 15px 13px;border-radius:12px;
+  border:1px solid var(--bt-border,#233048);
+  background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,0));
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.na-kpi::after{
+  content:"";position:absolute;left:0;top:0;height:2px;width:100%;
+  background:var(--bt-grad,linear-gradient(135deg,#3d7dff,#38bdf8));
+  opacity:.5;transition:opacity .18s ease;
+}
+.na-kpi:hover{
+  transform:translateY(-3px);
+  border-color:rgba(61,125,255,.5);
+  box-shadow:0 14px 34px -20px rgba(61,125,255,.85);
+}
+.na-kpi:hover::after{opacity:1;}
+.na-kpi-l{
+  display:block;font-family:var(--bt-mono,ui-monospace,monospace);
+  font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--bt-muted,#9aa7c2);
+}
+.na-kpi-v{
+  display:block;margin-top:6px;
+  font-family:var(--bt-mono,ui-monospace,monospace);font-weight:700;
+  font-size:clamp(1.15rem,2.5vw,1.7rem);line-height:1.04;
+  color:var(--bt-heading,#f5f7fb);font-variant-numeric:tabular-nums;
+}
+.na-kpi-s{display:block;margin-top:5px;font-size:11px;color:var(--bt-muted,#9aa7c2);}
+
+/* ---------- secondary CTA ---------- */
+.na-backtest-single .hero .hero-cta .na-cta2{margin-left:10px;}
