@@ -2,12 +2,13 @@
  * NeuronAlgo — Window Controls + Chart Zoom Reset (global, additive)
  * - .win cards get macOS-style minimize (yellow) + expand (green).
  *   Red is intentionally inert (no close on content pages).
- * - Equity/drawdown ApexCharts get a "reset scale" button. The charts are
- *   drag/wheel-zoomable but ship with the toolbar hidden, so there is
- *   otherwise no way back from a zoom. The live instance is resolved WITHOUT
- *   touching backtest-charts.js: the loader never sets element.apexcharts, so
- *   we find it via the ApexCharts canvas id (ApexCharts.getChartByID) and fall
- *   back to the Apex._chartInstances registry, then zoomX to the full range.
+ * - Equity/drawdown ApexCharts get a "reset scale" button. The chart loader
+ *   (backtest-charts.js, untouchable) builds each chart WITHOUT a chart.id and
+ *   never stores the instance, so the instance is otherwise unreachable. We
+ *   wrap ApexCharts.prototype.render once at load time so every chart records
+ *   itself on its mount element (el.__naChart). This script evaluates in the
+ *   footer before DOMContentLoaded, i.e. before the loader renders, so the
+ *   patch is always in place. Reset then zoomX-es back to the full data range.
  */
 (function(){
   'use strict';
@@ -16,6 +17,26 @@
 
   function ready(fn){
     if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn);}else{fn();}
+  }
+
+  // --- capture every ApexCharts instance on its mount element ---
+  function patchApex(){
+    if(typeof window.ApexCharts==='undefined'){return false;}
+    if(ApexCharts.__naPatched){return true;}
+    try{
+      ApexCharts.__naPatched=true;
+      var proto=ApexCharts.prototype;
+      var _render=proto.render;
+      proto.render=function(){
+        try{if(this.el){this.el.__naChart=this;}}catch(e){}
+        return _render.apply(this,arguments);
+      };
+    }catch(e){}
+    return true;
+  }
+  if(!patchApex()){
+    var _tries=0;
+    var _t=setInterval(function(){_tries++;if(patchApex()||_tries>100){clearInterval(_t);}},15);
   }
 
   var ov=null,scopeWrap=null,maxed=null,ph=null;
@@ -82,6 +103,7 @@
 
   // --- resolve the live ApexCharts instance for a chart container ---
   function findInstance(container){
+    if(container.__naChart){return container.__naChart;}
     if(container.apexcharts){return container.apexcharts;}
     try{
       var canvas=container.querySelector('.apexcharts-canvas');
