@@ -123,6 +123,41 @@ function na_enqueue_single_strategy_assets() {
 add_action( 'wp_enqueue_scripts', 'na_enqueue_single_strategy_assets', 20 );
 
 /**
+ * Enqueue Single Backtest styles + equity/drawdown chart assets (FE-3.3).
+ *
+ * Loaded only on is_singular( 'backtest' ). The section stylesheet is
+ * self-contained (its own scoped tokens under .na-backtest-single plus the
+ * body.single-backtest shell neutralizer) so it has no style dependencies. The
+ * chart bundle (na-apexcharts + na-backtest-charts), registered at priority 10
+ * above, is enqueued so the equity and drawdown charts auto-render via the
+ * na-backtest-charts loader. Section CSS is versioned by filemtime for
+ * cache-busting during active development.
+ */
+function na_enqueue_single_backtest_assets() {
+    if ( ! is_singular( 'backtest' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $rel  = '/assets/css/sections/single-backtest.css';
+    $ver  = file_exists( $base . $rel ) ? filemtime( $base . $rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+
+    wp_enqueue_style(
+        'na-single-backtest',
+        get_stylesheet_directory_uri() . $rel,
+        array(),
+        $ver,
+        'all'
+    );
+
+    // Equity + drawdown charts (reuse the registered chart bundle).
+    wp_enqueue_script( 'na-apexcharts' );
+    wp_enqueue_script( 'na-backtest-charts' );
+    wp_enqueue_style( 'na-backtest-charts' );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_single_backtest_assets', 20 );
+
+/**
  * Enqueue the bespoke landing ("The Desk") assets (FE-2.1).
  *
  * Loaded only when the current page uses the page-landing.php template.
