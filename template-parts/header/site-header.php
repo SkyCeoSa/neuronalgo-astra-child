@@ -33,7 +33,6 @@ $cta_url   = NA_Site_Header::get_cta_url();
 		<button class="na-cmdk-search na-cmdk-trigger" type="button" data-na-cmdk-open aria-haspopup="dialog" aria-controls="na-cmdk" aria-label="<?php echo esc_attr__( 'Open command menu', 'astra-child' ); ?>">
 			<span class="na-cmdk-search__ico" aria-hidden="true">⌕</span>
 			<span class="na-cmdk-search__ph"><?php echo esc_html__( 'Search the desk…', 'astra-child' ); ?></span>
-			<span class="na-cmdk-search__caret" aria-hidden="true"></span>
 			<span class="na-cmdk-search__sp"></span>
 			<kbd class="na-kbd">⌘K</kbd>
 		</button>
