@@ -158,6 +158,76 @@ function na_enqueue_single_backtest_assets() {
 add_action( 'wp_enqueue_scripts', 'na_enqueue_single_backtest_assets', 20 );
 
 /**
+ * Enqueue the Trade Distribution module on single backtests (FE-3.3b).
+ *
+ * Loaded only on is_singular( 'backtest' ), at priority 21 so the section
+ * stylesheet enqueued by na_enqueue_single_backtest_assets() (priority 20) is
+ * already in the queue and can be declared as a style dependency. The module
+ * reads the four per-trade distribution metas for the current backtest
+ * (long/short split, hourly, weekday, duration), injects them as a window.NA_TD
+ * object via wp_add_inline_script, and assets/js/trade-distribution.js builds
+ * the smart direction card + ApexCharts. Single-direction strategies render
+ * only the active side; empty sides are never shown. Depends on na-apexcharts
+ * (registered at priority 10). Versioned by filemtime for cache-busting.
+ */
+function na_enqueue_backtest_trade_distribution() {
+    if ( ! is_singular( 'backtest' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $uri  = get_stylesheet_directory_uri();
+
+    $css_rel = '/assets/css/sections/backtest-trade-distribution.css';
+    $css_ver = file_exists( $base . $css_rel ) ? filemtime( $base . $css_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_style(
+        'na-backtest-trade-distribution',
+        $uri . $css_rel,
+        array( 'na-single-backtest' ),
+        $css_ver,
+        'all'
+    );
+
+    $js_rel = '/assets/js/trade-distribution.js';
+    $js_ver = file_exists( $base . $js_rel ) ? filemtime( $base . $js_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_script(
+        'na-trade-distribution',
+        $uri . $js_rel,
+        array( 'na-apexcharts' ),
+        $js_ver,
+        true
+    );
+
+    // Inject the per-trade distribution metas for the current backtest.
+    $bt_id = get_queried_object_id();
+    $keys  = array(
+        'longShort' => 'long_short_json',
+        'hourly'    => 'hourly_dist_json',
+        'weekday'   => 'weekday_dist_json',
+        'duration'  => 'duration_dist_json',
+    );
+    $payload = array();
+    foreach ( $keys as $out_key => $meta_key ) {
+        $raw = get_post_meta( $bt_id, $meta_key, true );
+        $val = null;
+        if ( is_string( $raw ) && '' !== $raw ) {
+            $decoded = json_decode( $raw, true );
+            $val     = ( JSON_ERROR_NONE === json_last_error() ) ? $decoded : null;
+        } elseif ( is_array( $raw ) ) {
+            $val = $raw;
+        }
+        $payload[ $out_key ] = $val;
+    }
+
+    wp_add_inline_script(
+        'na-trade-distribution',
+        'window.NA_TD = ' . wp_json_encode( $payload ) . ';',
+        'before'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_backtest_trade_distribution', 21 );
+
+/**
  * Enqueue Backtest Runs archive styles (FE-3.4).
  *
  * Loaded only on is_post_type_archive( 'backtest' ). The section stylesheet is
