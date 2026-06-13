@@ -1,0 +1,35 @@
+/* NeuronAlgo — Backtest Trade Distribution (FE-3.3b)
+   Augments single-backtest.css. Scoped under .na-backtest-single so it inherits
+   the --bt-* terminal-desk tokens. Reuses .win/.tlet/.donut/.legend/.cmp/.bar. */
+
+.na-backtest-single .na-td-grid{margin-bottom:1.4rem}
+.na-backtest-single .na-td-tile .tlet-in{gap:1rem}
+
+.na-backtest-single .na-td-badge{display:inline-flex;align-items:center;gap:.42rem;align-self:flex-start;font-family:var(--bt-mono);font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 11px;border-radius:7px;color:var(--bt-amber);background:rgba(245,185,74,.08);border:1px solid rgba(245,185,74,.4)}
+.na-backtest-single .na-td-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--bt-amber);box-shadow:0 0 8px var(--bt-amber)}
+
+.na-backtest-single .na-td-note{font-family:var(--bt-mono);font-size:.7rem;color:var(--bt-muted)}
+
+.na-backtest-single .na-td-perf-grp{display:flex;flex-direction:column;gap:.5rem}
+.na-backtest-single .na-td-perf-grp+.na-td-perf-grp{margin-top:.85rem;padding-top:.85rem;border-top:1px dashed var(--bt-border-soft)}
+.na-backtest-single .na-td-perf-h{font-family:var(--bt-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--bt-cyan)}
+.na-backtest-single .na-td-perf-h::before{content:'> ';color:var(--bt-cyan);opacity:.7}
+
+.na-backtest-single .na-td-chartwrap{margin-top:1.5rem}
+.na-backtest-single .na-td-chartwrap:first-of-type{margin-top:.5rem}
+.na-backtest-single .na-td-chart{min-height:280px}
+
+/* rich custom tooltip (shared by all three charts) */
+.na-backtest-single .apexcharts-tooltip,
+.na-backtest-single .apexcharts-tooltip.apexcharts-theme-light,
+.na-backtest-single .apexcharts-tooltip.apexcharts-theme-dark{background:transparent;border:0;box-shadow:none;overflow:visible}
+.na-backtest-single .na-tt{font-family:var(--bt-mono);min-width:148px;background:var(--bt-elevated);border:1px solid var(--bt-border);border-radius:9px;padding:.55rem .65rem;box-shadow:0 18px 40px -20px rgba(0,0,0,.9)}
+.na-backtest-single .na-tt-h{font-size:.7rem;color:var(--bt-heading);font-weight:700;margin-bottom:.35rem;letter-spacing:.02em}
+.na-backtest-single .na-tt-r{display:flex;justify-content:space-between;gap:1.2rem;font-size:.7rem;color:var(--bt-text-2);padding:1px 0}
+.na-backtest-single .na-tt-r b{color:var(--bt-text);font-variant-numeric:tabular-nums}
+.na-backtest-single .na-tt-r b.pp{color:var(--bt-green)}
+.na-backtest-single .na-tt-r b.nn{color:var(--bt-red)}
+
+@media(max-width:720px){
+.na-backtest-single .na-td-chart{min-height:240px}
+}
