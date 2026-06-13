@@ -65,6 +65,11 @@ require_once get_stylesheet_directory() . '/inc/class-na-internal-links.php';
 require_once get_stylesheet_directory() . '/inc/enqueue/class-conditional-assets.php';
 
 /**
+ * Include Single Backtest enhancements enqueue + hero data (FE-3.6).
+ */
+require_once get_stylesheet_directory() . '/inc/enqueue/backtest-enhance-assets.php';
+
+/**
  * Include Strategy Library query layer + helpers (FE-3.1).
  */
 require_once get_stylesheet_directory() . '/inc/query/strategy-archive.php';
