@@ -158,6 +158,35 @@ function na_enqueue_single_backtest_assets() {
 add_action( 'wp_enqueue_scripts', 'na_enqueue_single_backtest_assets', 20 );
 
 /**
+ * Enqueue Backtest Runs archive styles (FE-3.4).
+ *
+ * Loaded only on is_post_type_archive( 'backtest' ). The section stylesheet is
+ * self-contained (its own scoped tokens under .na-backtest-archive plus the
+ * body.post-type-archive-backtest shell neutralizer) and reuses the global
+ * DS-B components for buttons/cards. Equity sparklines on the run cards are
+ * inline SVG, so no chart bundle is needed here. Versioned by filemtime for
+ * cache-busting during active development.
+ */
+function na_enqueue_backtest_archive_assets() {
+    if ( ! is_post_type_archive( 'backtest' ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $rel  = '/assets/css/sections/backtest-archive.css';
+    $ver  = file_exists( $base . $rel ) ? filemtime( $base . $rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+
+    wp_enqueue_style(
+        'na-backtest-archive',
+        get_stylesheet_directory_uri() . $rel,
+        array( 'na-design-tokens', 'na-components' ),
+        $ver,
+        'all'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_backtest_archive_assets', 20 );
+
+/**
  * Enqueue the bespoke landing ("The Desk") assets (FE-2.1).
  *
  * Loaded only when the current page uses the page-landing.php template.
