@@ -306,3 +306,45 @@ function na_enqueue_landing_assets() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'na_enqueue_landing_assets', 20 );
+
+/**
+ * Enqueue the global Window Controls + Chart Zoom Reset module (FE-3.5).
+ *
+ * Loaded on single backtests and single strategies, where the terminal-desk
+ * .win cards live. Adds macOS-style minimize/expand behavior to every card
+ * (close is intentionally inert on content pages) and a reset-scale button for
+ * the drag-zoomable equity/drawdown ApexCharts (which ship with the toolbar
+ * hidden, so there is otherwise no way back from a zoom). The script reads the
+ * live ApexCharts instance via element.apexcharts and does not touch the chart
+ * bundle. Priority 22 so it runs after the section + chart assets. Versioned by
+ * filemtime for cache-busting during active development.
+ */
+function na_enqueue_window_controls() {
+    if ( ! is_singular( array( 'backtest', 'strategy' ) ) ) {
+        return;
+    }
+
+    $base = get_stylesheet_directory();
+    $uri  = get_stylesheet_directory_uri();
+
+    $css_rel = '/assets/css/components/window-controls.css';
+    $css_ver = file_exists( $base . $css_rel ) ? filemtime( $base . $css_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_style(
+        'na-window-controls',
+        $uri . $css_rel,
+        array(),
+        $css_ver,
+        'all'
+    );
+
+    $js_rel = '/assets/js/window-controls.js';
+    $js_ver = file_exists( $base . $js_rel ) ? filemtime( $base . $js_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_script(
+        'na-window-controls',
+        $uri . $js_rel,
+        array(),
+        $js_ver,
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'na_enqueue_window_controls', 22 );
