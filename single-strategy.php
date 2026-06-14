@@ -1,11 +1,22 @@
 <?php
 /**
- * Single Strategy template (FE-3.2).
+ * Single Strategy template (FE-3.7) — terminal-desk hero + spec sheet.
  *
- * Renders one strategy: hero + taxonomy chips, flagship KPI grid (DS-B metric
- * tiles), flagship equity curve, methodology (post content), risk profile, and
- * related strategies. Read-only presentation built on DS-B components
- * (.na-card, .na-btn, .na-metric) and the global design tokens.
+ * Section order (north-star = approved prototype, one level more polished):
+ *   1. Hero  — a "trading desk" console card: window top-bar (dots + path + LIVE),
+ *      eyebrow, BRAND name + animated caret, the stable code · symbol · timeframe
+ *      identity line, and the four headline KPIs INTEGRATED into the hero.
+ *   2. Strategy spec (public GENERAL card + locked PRO teaser).
+ *   3. Equity curve (moved up, right under the spec).
+ *   4. Performance breakdown (the remaining metrics, as a tidy titled grid).
+ *   5. Methodology (post content, only when present).
+ *   6. Related strategies.
+ *   7. CTA.
+ *
+ * 3-layer naming: the H1 shows the BRAND name (display_title meta), NEVER the raw
+ * StrategyQuant filename ("Strategy 2.15.64"). When no brand is assigned yet it
+ * falls back to the stable code (e.g. NA-FX-010). The stable code + symbol +
+ * timeframe render as the mono identity line beneath the name.
  *
  * Percent metas are stored as whole numbers (e.g. 11.57 => 11.57%) and rendered
  * directly — no x100 scaling.
@@ -89,202 +100,157 @@ while ( have_posts() ) :
 	$na_sid = get_the_ID();
 	$na_bt  = function_exists( 'na_strategy_flagship_backtest' ) ? na_strategy_flagship_backtest( $na_sid ) : 0;
 
-	// Eyebrow: primary strategy_type term, else a neutral label.
-	$na_eyebrow    = 'Strategy';
+	/* ---- 3-layer naming: brand name (never the raw quant filename) ---- */
+	$na_code  = (string) get_post_meta( $na_sid, 'strategy_code', true );
+	$na_brand = (string) get_post_meta( $na_sid, 'display_title', true );
+	$na_title = get_the_title();
+	// Suppress raw StrategyQuant filenames like "Strategy 2.15.64".
+	$na_is_raw = ( '' === trim( $na_brand ) ) || preg_match( '/^\s*strategy\s+[\d.\s]+$/i', $na_brand );
+	if ( $na_is_raw ) {
+		$na_brand = ( '' !== $na_code ) ? $na_code : $na_title;
+	}
+
+	/* ---- Identity line: code · symbol · timeframe ---- */
+	$na_symbol = (string) get_post_meta( $na_sid, 'strategy_symbol_meta_field', true );
+	$na_tf     = (string) get_post_meta( $na_sid, 'strategy_timeframe_meta_field', true );
+	if ( '' === $na_symbol && $na_bt ) {
+		$na_symbol = (string) get_post_meta( $na_bt, 'instrument_meta_field', true );
+	}
+	if ( '' === $na_tf && $na_bt ) {
+		$na_tf = (string) get_post_meta( $na_bt, 'time_frame_meta_field', true );
+	}
+	$na_id_parts = array_values(
+		array_filter(
+			array( $na_code, $na_symbol, $na_tf ),
+			function ( $v ) {
+				return '' !== trim( (string) $v );
+			}
+		)
+	);
+
+	/* ---- Console path slug ---- */
+	$na_slug = get_post_field( 'post_name', $na_sid );
+	if ( '' === (string) $na_slug ) {
+		$na_slug = 'strategy';
+	}
+
+	/* ---- Eyebrow: primary strategy_type term, else neutral label ---- */
+	$na_eyebrow    = 'Quant Strategy';
 	$na_type_terms = get_the_terms( $na_sid, 'strategy_type' );
 	if ( ! is_wp_error( $na_type_terms ) && ! empty( $na_type_terms ) ) {
 		$na_eyebrow = $na_type_terms[0]->name;
 	}
 
-	// Hero taxonomy chips (label => primary term name).
-	$na_chip_taxes = array(
-		'market'      => 'Market',
-		'asset_class' => 'Asset class',
-		'timeframe'   => 'Timeframe',
-		'risk_level'  => 'Risk',
-	);
-	$na_chips = array();
-	foreach ( $na_chip_taxes as $na_tax => $na_lbl ) {
-		if ( ! taxonomy_exists( $na_tax ) ) {
-			continue;
+	/* ---- Numeric backtest meta helper (percents are whole numbers) ---- */
+	$na_num = function ( $key ) use ( $na_bt ) {
+		if ( ! $na_bt ) {
+			return null;
 		}
-		$na_terms = get_the_terms( $na_sid, $na_tax );
-		if ( ! is_wp_error( $na_terms ) && ! empty( $na_terms ) ) {
-			$na_chips[] = array(
-				'label' => $na_lbl,
-				'name'  => $na_terms[0]->name,
-			);
-		}
+		$val = get_post_meta( $na_bt, $key, true );
+		return ( '' === $val || null === $val ) ? null : (float) $val;
+	};
+
+	$na_cagr    = $na_num( 'cagr_meta_field' );
+	$na_pf      = $na_num( 'profit_factor_meta_field' );
+	$na_win     = $na_num( 'winning_percentage_meta_field' );
+	$na_dd      = $na_num( 'drawdown_percent_meta_field' );
+	$na_sharpe  = $na_num( 'sharpe_ratio_meta_field' );
+	$na_sortino = $na_num( 'sortino_ratio' );
+	$na_trades  = $na_num( 'number_of_trades_meta_field' );
+	$na_profit  = $na_num( 'total_profit_meta_field' );
+
+	/* Headline KPIs — integrated INTO the hero (max four, prototype parity). */
+	$na_hero_kpis = array();
+	if ( null !== $na_cagr ) {
+		$na_hero_kpis[] = array(
+			'k' => 'CAGR',
+			'v' => ( $na_cagr >= 0 ? '+' : '' ) . number_format( $na_cagr, 2 ) . '%',
+			's' => $na_cagr >= 0 ? 'pos' : 'neg',
+		);
+	}
+	if ( null !== $na_pf ) {
+		$na_hero_kpis[] = array( 'k' => 'Profit Factor', 'v' => number_format( $na_pf, 2 ), 's' => '' );
+	}
+	if ( null !== $na_win ) {
+		$na_hero_kpis[] = array( 'k' => 'Win Rate', 'v' => number_format( $na_win, 2 ) . '%', 's' => '' );
+	}
+	if ( null !== $na_dd ) {
+		$na_hero_kpis[] = array( 'k' => 'Max DD', 'v' => '-' . number_format( abs( $na_dd ), 2 ) . '%', 's' => 'neg' );
 	}
 
-	// Build the flagship KPI tiles from backtest meta (percents are whole numbers).
-	$na_tiles = array();
-	if ( $na_bt ) {
-		$na_meta_num = function ( $key ) use ( $na_bt ) {
-			$val = get_post_meta( $na_bt, $key, true );
-			return ( '' === $val || null === $val ) ? null : (float) $val;
-		};
-
-		$cagr = $na_meta_num( 'cagr_meta_field' );
-		if ( null !== $cagr ) {
-			$na_tiles[] = array(
-				'label'       => 'CAGR',
-				'value'       => ( $cagr >= 0 ? '+' : '' ) . number_format( $cagr, 2 ) . '%',
-				'trend_state' => $cagr >= 0 ? 'positive' : 'negative',
-			);
-		}
-
-		$sharpe = $na_meta_num( 'sharpe_ratio_meta_field' );
-		if ( null !== $sharpe ) {
-			$na_tiles[] = array(
-				'label'       => 'Sharpe ratio',
-				'value'       => number_format( $sharpe, 2 ),
-				'trend_state' => 'info',
-			);
-		}
-
-		$dd = $na_meta_num( 'drawdown_percent_meta_field' );
-		if ( null !== $dd ) {
-			$na_tiles[] = array(
-				'label'       => 'Max drawdown',
-				'value'       => '-' . number_format( abs( $dd ), 2 ) . '%',
-				'trend_state' => 'negative',
-			);
-		}
-
-		$win = $na_meta_num( 'winning_percentage_meta_field' );
-		if ( null !== $win ) {
-			$na_tiles[] = array(
-				'label'       => 'Win rate',
-				'value'       => number_format( $win, 2 ) . '%',
-				'trend_state' => 'info',
-			);
-		}
-
-		$pf = $na_meta_num( 'profit_factor_meta_field' );
-		if ( null !== $pf ) {
-			$na_tiles[] = array(
-				'label'       => 'Profit factor',
-				'value'       => number_format( $pf, 2 ),
-				'trend_state' => 'info',
-			);
-		}
-
-		$sortino = $na_meta_num( 'sortino_ratio' );
-		if ( null !== $sortino ) {
-			$na_tiles[] = array(
-				'label'       => 'Sortino ratio',
-				'value'       => number_format( $sortino, 2 ),
-				'trend_state' => 'info',
-			);
-		}
-
-		$trades = $na_meta_num( 'number_of_trades_meta_field' );
-		if ( null !== $trades ) {
-			$na_tiles[] = array(
-				'label'       => 'Trades',
-				'value'       => number_format( $trades, 0 ),
-				'trend_state' => 'info',
-			);
-		}
-
-		$profit = $na_meta_num( 'total_profit_meta_field' );
-		if ( null !== $profit ) {
-			$na_tiles[] = array(
-				'label'       => 'Net profit',
-				'value'       => ( $profit >= 0 ? '+$' : '-$' ) . number_format( abs( $profit ), 0 ),
-				'trend_state' => $profit >= 0 ? 'positive' : 'negative',
-			);
-		}
+	/* Secondary metrics — the performance breakdown grid (no hero duplication). */
+	$na_more = array();
+	if ( null !== $na_sharpe ) {
+		$na_more[] = array( 'k' => 'Sharpe ratio', 'v' => number_format( $na_sharpe, 2 ) );
+	}
+	if ( null !== $na_sortino ) {
+		$na_more[] = array( 'k' => 'Sortino ratio', 'v' => number_format( $na_sortino, 2 ) );
+	}
+	if ( null !== $na_trades ) {
+		$na_more[] = array( 'k' => 'Total trades', 'v' => number_format( $na_trades, 0 ) );
+	}
+	if ( null !== $na_profit ) {
+		$na_more[] = array( 'k' => 'Net profit', 'v' => ( $na_profit >= 0 ? '+$' : '-$' ) . number_format( abs( $na_profit ), 0 ) );
 	}
 
-	// Flagship equity payload for the chart.
+	/* Flagship equity payload for the chart. */
 	$na_equity    = na_strategy_equity_payload( $na_bt );
 	$na_has_chart = ! empty( $na_equity['series'] );
 	$na_chart_id  = 'na-strategy-equity-' . $na_sid;
 
-	// Instrument / period subline from the flagship backtest.
-	$na_instrument = $na_bt ? get_post_meta( $na_bt, 'instrument_meta_field', true ) : '';
-	$na_tf         = $na_bt ? get_post_meta( $na_bt, 'time_frame_meta_field', true ) : '';
-	$na_p_start    = $na_bt ? get_post_meta( $na_bt, 'backtest_period_start_meta_field', true ) : '';
-	$na_p_end      = $na_bt ? get_post_meta( $na_bt, 'backtest_period_end_meta_field', true ) : '';
+	/* Period subline for the equity section. */
+	$na_p_start = $na_bt ? get_post_meta( $na_bt, 'backtest_period_start_meta_field', true ) : '';
+	$na_p_end   = $na_bt ? get_post_meta( $na_bt, 'backtest_period_end_meta_field', true ) : '';
 	?>
 	<main class="na-strategy-single" id="na-strategy-single">
 		<article <?php post_class( 'na-strategy-single-inner' ); ?>>
 
 			<header class="na-strategy-hero na-panel na-glow-border">
-				<p class="na-eyebrow"><?php echo esc_html( $na_eyebrow ); ?></p>
-				<h1 class="na-strategy-title"><?php the_title(); ?></h1>
+				<div class="na-strategy-hero-bar">
+					<span class="na-strategy-dots" aria-hidden="true"><i class="na-dot r"></i><i class="na-dot y"></i><i class="na-dot g"></i></span>
+					<span class="na-strategy-hero-path">~/strategies/<?php echo esc_html( $na_slug ); ?></span>
+					<span class="na-strategy-hero-sp"></span>
+					<span class="na-strategy-hero-live"><i></i>LIVE</span>
+				</div>
+				<div class="na-strategy-hero-body">
+					<p class="na-eyebrow"><?php echo esc_html( $na_eyebrow ); ?></p>
+					<h1 class="na-strategy-title"><?php echo esc_html( $na_brand ); ?><span class="na-strategy-caret" aria-hidden="true"></span></h1>
 
-				<?php if ( has_excerpt() ) : ?>
-					<p class="na-strategy-lead na-section-lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $na_chips ) ) : ?>
-					<ul class="na-strategy-chips">
-						<?php foreach ( $na_chips as $na_chip ) : ?>
-							<li class="na-strategy-chip">
-								<span class="na-strategy-chip-label na-micro"><?php echo esc_html( $na_chip['label'] ); ?></span>
-								<span class="na-strategy-chip-value"><?php echo esc_html( $na_chip['name'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php endif; ?>
-
-				<?php if ( $na_bt ) : ?>
-					<div class="na-strategy-hero-cta">
-						<a class="na-btn na-btn-primary" href="<?php echo esc_url( get_permalink( $na_bt ) ); ?>">View full backtest</a>
-					</div>
-				<?php endif; ?>
-			</header>
-
-			<?php if ( ! empty( $na_tiles ) ) : ?>
-				<section class="na-strategy-section na-strategy-kpis" aria-label="Flagship performance">
-					<h2 class="na-h2 na-strategy-section-title">Flagship performance</h2>
-					<?php if ( $na_instrument || $na_tf || ( $na_p_start && $na_p_end ) ) : ?>
-						<p class="na-strategy-section-intro na-section-intro">
-							<?php
-							$na_bits = array();
-							if ( $na_instrument ) {
-								$na_bits[] = $na_instrument;
-							}
-							if ( $na_tf ) {
-								$na_bits[] = $na_tf;
-							}
-							if ( $na_p_start && $na_p_end ) {
-								$na_bits[] = $na_p_start . ' → ' . $na_p_end;
-							}
-							echo esc_html( implode( '  ·  ', $na_bits ) );
-							?>
-						</p>
+					<?php if ( ! empty( $na_id_parts ) ) : ?>
+						<p class="na-strategy-id"><?php echo esc_html( implode( '  ·  ', $na_id_parts ) ); ?></p>
 					<?php endif; ?>
 
-					<div class="na-strategy-kpi-grid">
-						<?php
-						foreach ( $na_tiles as $na_tile ) {
-							get_template_part(
-								'template-parts/component-metric',
-								null,
-								array(
-									'label'       => $na_tile['label'],
-									'value'       => $na_tile['value'],
-									'trend_state' => $na_tile['trend_state'],
-									'size'        => 'md',
-									'format'      => 'number',
-									'class'       => 'na-strategy-kpi',
-								)
-							);
-						}
-						?>
-					</div>
-				</section>
-			<?php endif; ?>
+					<?php if ( has_excerpt() ) : ?>
+						<p class="na-strategy-lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
+					<?php endif; ?>
+
+					<?php if ( ! empty( $na_hero_kpis ) ) : ?>
+						<div class="na-strategy-hero-kpis">
+							<?php foreach ( $na_hero_kpis as $na_k ) : ?>
+								<div class="na-strategy-hero-kpi">
+									<span class="na-strategy-hero-kpi-k"><?php echo esc_html( $na_k['k'] ); ?></span>
+									<span class="na-strategy-hero-kpi-v <?php echo esc_attr( $na_k['s'] ); ?>"><?php echo esc_html( $na_k['v'] ); ?></span>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( $na_bt ) : ?>
+						<div class="na-strategy-hero-cta">
+							<a class="na-btn na-btn-primary" href="<?php echo esc_url( get_permalink( $na_bt ) ); ?>">View full backtest</a>
+						</div>
+					<?php endif; ?>
+				</div>
+			</header>
 
 			<?php get_template_part( 'template-parts/strategy-spec', null, array( 'sid' => $na_sid ) ); ?>
 
 			<?php if ( $na_has_chart ) : ?>
 				<section class="na-strategy-section na-strategy-chart-section" aria-label="Equity curve">
 					<h2 class="na-h2 na-strategy-section-title">Equity curve</h2>
+					<?php if ( $na_p_start && $na_p_end ) : ?>
+						<p class="na-strategy-section-intro"><?php echo esc_html( $na_p_start . '  →  ' . $na_p_end ); ?></p>
+					<?php endif; ?>
 					<div class="na-strategy-equity-chart na-panel" id="<?php echo esc_attr( $na_chart_id ); ?>"></div>
 					<script id="<?php echo esc_attr( $na_chart_id ); ?>-data" type="application/json"><?php echo wp_json_encode( $na_equity, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); ?></script>
 					<script>
@@ -326,36 +292,25 @@ while ( have_posts() ) :
 				</section>
 			<?php endif; ?>
 
+			<?php if ( ! empty( $na_more ) ) : ?>
+				<section class="na-strategy-section na-strategy-perf" aria-label="Performance breakdown">
+					<h2 class="na-h2 na-strategy-section-title">Performance breakdown</h2>
+					<div class="na-strategy-perf-grid">
+						<?php foreach ( $na_more as $na_m ) : ?>
+							<div class="na-strategy-perf-item">
+								<span class="na-strategy-perf-k"><?php echo esc_html( $na_m['k'] ); ?></span>
+								<span class="na-strategy-perf-v"><?php echo esc_html( $na_m['v'] ); ?></span>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</section>
+			<?php endif; ?>
+
 			<?php if ( get_the_content() ) : ?>
 				<section class="na-strategy-section na-strategy-methodology" aria-label="Methodology">
 					<h2 class="na-h2 na-strategy-section-title">Methodology</h2>
 					<div class="na-strategy-prose">
 						<?php the_content(); ?>
-					</div>
-				</section>
-			<?php endif; ?>
-
-			<?php
-			$na_risk_terms = get_the_terms( $na_sid, 'risk_level' );
-			$na_risk_label = ( ! is_wp_error( $na_risk_terms ) && ! empty( $na_risk_terms ) ) ? $na_risk_terms[0]->name : '';
-			$na_dd_stat    = $na_bt ? get_post_meta( $na_bt, 'drawdown_percent_meta_field', true ) : '';
-			if ( $na_risk_label || '' !== $na_dd_stat ) :
-				?>
-				<section class="na-strategy-section na-strategy-risk" aria-label="Risk profile">
-					<h2 class="na-h2 na-strategy-section-title">Risk profile</h2>
-					<div class="na-strategy-risk-grid">
-						<?php if ( $na_risk_label ) : ?>
-							<div class="na-strategy-risk-item na-card">
-								<span class="na-strategy-risk-key na-micro">Risk level</span>
-								<span class="na-strategy-risk-val"><?php echo esc_html( $na_risk_label ); ?></span>
-							</div>
-						<?php endif; ?>
-						<?php if ( '' !== $na_dd_stat ) : ?>
-							<div class="na-strategy-risk-item na-card">
-								<span class="na-strategy-risk-key na-micro">Max drawdown</span>
-								<span class="na-strategy-risk-val na-tab na-neg">-<?php echo esc_html( number_format( abs( (float) $na_dd_stat ), 2 ) ); ?>%</span>
-							</div>
-						<?php endif; ?>
 					</div>
 				</section>
 			<?php endif; ?>
