@@ -103,6 +103,17 @@ function na_enqueue_single_strategy_assets() {
         'all'
     );
 
+    // Strategy Spec section (FE-3.6) layered on top of na-single-strategy.
+    $spec_rel = '/assets/css/sections/single-strategy-spec.css';
+    $spec_ver = file_exists( $base . $spec_rel ) ? filemtime( $base . $spec_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
+    wp_enqueue_style(
+        'na-single-strategy-spec',
+        get_stylesheet_directory_uri() . $spec_rel,
+        array( 'na-single-strategy' ),
+        $spec_ver,
+        'all'
+    );
+
     // Related-strategy cards reuse the FE-3.1 strategy-card styles.
     $lib_rel = '/assets/css/sections/strategy-library.css';
     $lib_ver = file_exists( $base . $lib_rel ) ? filemtime( $base . $lib_rel ) : CHILD_THEME_ASTRA_CHILD_VERSION;
