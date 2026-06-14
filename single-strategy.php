@@ -13,10 +13,13 @@
  *   6. Related strategies.
  *   7. CTA.
  *
- * 3-layer naming: the H1 shows the BRAND name (display_title meta), NEVER the raw
- * StrategyQuant filename ("Strategy 2.15.64"). When no brand is assigned yet it
- * falls back to the stable code (e.g. NA-FX-010). The stable code + symbol +
- * timeframe render as the mono identity line beneath the name.
+ * 3-layer naming:
+ *   L1 = raw StrategyQuant filename (e.g. "Strategy 2.15.64") — NEVER shown.
+ *   L2 = stable code (e.g. NA-FX-010) — the mono identity line + automation key.
+ *   L3 = constellation BRAND name (e.g. Cassiopeia) — the H1. Resolved from the
+ *        constellation bank in na_strategy_brand_name(), keyed off the stable code
+ *        so it survives re-imports. Falls back to an assigned display_title brand,
+ *        then to the bare code.
  *
  * Percent metas are stored as whole numbers (e.g. 11.57 => 11.57%) and rendered
  * directly — no x100 scaling.
@@ -92,6 +95,77 @@ if ( ! function_exists( 'na_strategy_equity_payload' ) ) {
 	}
 }
 
+/**
+ * Resolve the Layer-3 BRAND name (constellation bank) for a strategy.
+ *
+ * Keyed off the stable strategy_code so the brand never changes when posts are
+ * re-imported. When a code is not yet in the bank it falls back to an assigned
+ * display_title brand (anything that is NOT the raw quant filename), then to the
+ * bare code, then to the post title. The H1 therefore never shows "Strategy x.y".
+ *
+ * @param int $sid Strategy post ID.
+ * @return string
+ */
+if ( ! function_exists( 'na_strategy_brand_name' ) ) {
+	function na_strategy_brand_name( $sid ) {
+		$code = (string) get_post_meta( $sid, 'strategy_code', true );
+
+		// Constellation / named-star bank. Stable, human-memorable Layer-3 brands.
+		$bank = array(
+			// FX
+			'NA-FX-002'  => 'Orion',
+			'NA-FX-003'  => 'Lyra',
+			'NA-FX-004'  => 'Carina',
+			'NA-FX-005'  => 'Andromeda',
+			'NA-FX-006'  => 'Aquila',
+			'NA-FX-007'  => 'Cygnus',
+			'NA-FX-008'  => 'Perseus',
+			'NA-FX-009'  => 'Vega',
+			'NA-FX-010'  => 'Cassiopeia',
+			// Indices
+			'NA-IDX-001' => 'Centaurus',
+			'NA-IDX-002' => 'Hydra',
+			'NA-IDX-003' => 'Pegasus',
+			'NA-IDX-004' => 'Phoenix',
+			'NA-IDX-005' => 'Draco',
+			'NA-IDX-006' => 'Hercules',
+			'NA-IDX-007' => 'Aquarius',
+			'NA-IDX-008' => 'Gemini',
+			'NA-IDX-009' => 'Leo',
+			'NA-IDX-010' => 'Taurus',
+			'NA-IDX-011' => 'Scorpius',
+			// Gold (XAU)
+			'NA-XAU-001' => 'Auriga',
+			'NA-XAU-002' => 'Corona',
+			'NA-XAU-003' => 'Vela',
+		);
+
+		/**
+		 * Allow the bank to be extended/overridden without touching the template.
+		 *
+		 * @param array $bank code => brand-name map.
+		 */
+		$bank = (array) apply_filters( 'na_strategy_brand_bank', $bank );
+
+		if ( '' !== $code && isset( $bank[ $code ] ) ) {
+			return $bank[ $code ];
+		}
+
+		// Fall back to an assigned brand in display_title, but never the raw quant name.
+		$display = (string) get_post_meta( $sid, 'display_title', true );
+		$is_raw  = ( '' === trim( $display ) ) || preg_match( '/^\s*strategy\s+[\d.\s]+$/i', $display );
+		if ( ! $is_raw ) {
+			return $display;
+		}
+
+		if ( '' !== $code ) {
+			return $code;
+		}
+
+		return get_the_title( $sid );
+	}
+}
+
 get_header();
 
 while ( have_posts() ) :
@@ -100,15 +174,9 @@ while ( have_posts() ) :
 	$na_sid = get_the_ID();
 	$na_bt  = function_exists( 'na_strategy_flagship_backtest' ) ? na_strategy_flagship_backtest( $na_sid ) : 0;
 
-	/* ---- 3-layer naming: brand name (never the raw quant filename) ---- */
+	/* ---- 3-layer naming: Layer-3 brand from the constellation bank ---- */
 	$na_code  = (string) get_post_meta( $na_sid, 'strategy_code', true );
-	$na_brand = (string) get_post_meta( $na_sid, 'display_title', true );
-	$na_title = get_the_title();
-	// Suppress raw StrategyQuant filenames like "Strategy 2.15.64".
-	$na_is_raw = ( '' === trim( $na_brand ) ) || preg_match( '/^\s*strategy\s+[\d.\s]+$/i', $na_brand );
-	if ( $na_is_raw ) {
-		$na_brand = ( '' !== $na_code ) ? $na_code : $na_title;
-	}
+	$na_brand = na_strategy_brand_name( $na_sid );
 
 	/* ---- Identity line: code · symbol · timeframe ---- */
 	$na_symbol = (string) get_post_meta( $na_sid, 'strategy_symbol_meta_field', true );
