@@ -280,6 +280,8 @@ while ( have_posts() ) :
 				</section>
 			<?php endif; ?>
 
+			<?php get_template_part( 'template-parts/strategy-spec', null, array( 'sid' => $na_sid ) ); ?>
+
 			<?php if ( $na_has_chart ) : ?>
 				<section class="na-strategy-section na-strategy-chart-section" aria-label="Equity curve">
 					<h2 class="na-h2 na-strategy-section-title">Equity curve</h2>
